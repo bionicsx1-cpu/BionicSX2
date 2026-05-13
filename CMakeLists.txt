@@ -153,6 +153,7 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/src/pcsx2/DebugTools
     ${CMAKE_SOURCE_DIR}/src/x86
     ${CMAKE_SOURCE_DIR}/metal
+    ${CMAKE_SOURCE_DIR}/pcsx2/common
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fast_float/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/include

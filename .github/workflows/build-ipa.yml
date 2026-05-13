@@ -21,7 +21,7 @@ jobs:
       # AUDIT REFERENCE: Section 13.6 — Checkout with submodules
       # PCSX2 core is expected to be a submodule in src/
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
 
