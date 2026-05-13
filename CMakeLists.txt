@@ -270,6 +270,7 @@ target_include_directories(bionicsx2_core PRIVATE
     /opt/homebrew/opt/sdl3/include
     /opt/homebrew/opt/rapidyaml/include
     ${CMAKE_SOURCE_DIR}/src/stubs
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/demangler/include
 )
 
 # AUDIT REFERENCE: Section 10.2 — Swift UI frontend target
