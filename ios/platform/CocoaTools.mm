@@ -10,7 +10,8 @@
 #include <string>
 #include <optional>
 
-struct WindowInfo;
+#include "common/Pcsx2Defs.h"
+#include "common/WindowInfo.h"
 
 namespace CocoaTools
 {
