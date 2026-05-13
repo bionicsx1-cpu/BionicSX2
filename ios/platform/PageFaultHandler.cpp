@@ -142,6 +142,15 @@ namespace PageFaultHandler
 
     static HandlerResult HandlePageFault(void* exception_pc, void* fault_address, bool is_write);
 
+    // iOS stub — Mach exception handler placeholder
+    // Called from SignalHandler when a BAD_ACCESS Mach exception is received.
+    // Returns ContinueExecution to keep the VM running.
+    // Full implementation will integrate with vtlb page fault handling.
+    static HandlerResult HandlePageFault(void* exception_pc, void* fault_address, bool is_write)
+    {
+        return HandlerResult::ContinueExecution;
+    }
+
     static mach_port_t s_port = 0;
     static std::recursive_mutex s_exception_handler_mutex;
     static bool s_in_exception_handler = false;

@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <atomic>
+#include <algorithm>
 
 // AUDIT REFERENCE: Section 4.2 — Frame synchronization primitives
 // MTLFence, MTLCommandBuffer completion handlers, draw ID tracking
