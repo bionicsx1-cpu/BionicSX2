@@ -181,6 +181,11 @@ target_link_libraries(bionicsx2_core PUBLIC
     /opt/homebrew/opt/ffmpeg/lib/libavformat.dylib
     /opt/homebrew/opt/ffmpeg/lib/libavutil.dylib
     /opt/homebrew/opt/ffmpeg/lib/libswscale.dylib
+    /opt/homebrew/opt/lz4/lib/liblz4.dylib
+    /opt/homebrew/opt/zstd/lib/libzstd.dylib
+    /opt/homebrew/opt/curl/lib/libcurl.dylib
+    /opt/homebrew/opt/webp/lib/libwebp.dylib
+    /opt/homebrew/opt/freetype/lib/libfreetype.dylib
 )
 
 # AUDIT REFERENCE: Section 10.2 — Compile options
@@ -239,6 +244,14 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/rcheevos/include
     /opt/homebrew/opt/ffmpeg/include
+    /opt/homebrew/opt/lz4/include
+    /opt/homebrew/opt/zstd/include
+    /opt/homebrew/opt/curl/include
+    /opt/homebrew/opt/webp/include
+    /opt/homebrew/opt/freetype/include/freetype2
+    /opt/homebrew/opt/sdl3/include
+    /opt/homebrew/opt/rapidyaml/include
+    ${CMAKE_SOURCE_DIR}/src/stubs
 )
 
 # AUDIT REFERENCE: Section 10.2 — Swift UI frontend target
