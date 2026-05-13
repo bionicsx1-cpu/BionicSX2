@@ -1,0 +1,5 @@
+[submodule "pcsx2"]
+    path = pcsx2
+    url = https://github.com/PCSX2/pcsx2.git
+    branch = master
+    shallow = true
