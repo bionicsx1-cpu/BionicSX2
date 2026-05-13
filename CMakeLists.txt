@@ -15,27 +15,9 @@ enable_language(CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Homebrew library paths for iOS cross-compilation (resolve at configure time)
-execute_process(COMMAND brew --prefix libpng    OUTPUT_VARIABLE HOMEBREW_LIBPNG   OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process(COMMAND brew --prefix ffmpeg    OUTPUT_VARIABLE HOMEBREW_FFMPEG   OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process(COMMAND brew --prefix lz4       OUTPUT_VARIABLE HOMEBREW_LZ4      OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process(COMMAND brew --prefix zstd      OUTPUT_VARIABLE HOMEBREW_ZSTD     OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process(COMMAND brew --prefix freetype  OUTPUT_VARIABLE HOMEBREW_FREETYPE OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process(COMMAND brew --prefix curl      OUTPUT_VARIABLE HOMEBREW_CURL     OUTPUT_STRIP_TRAILING_WHITESPACE)
-execute_process(COMMAND brew --prefix libjpeg   OUTPUT_VARIABLE HOMEBREW_LIBJPEG  OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-message(STATUS "Homebrew libpng:   ${HOMEBREW_LIBPNG}")
-message(STATUS "Homebrew ffmpeg:   ${HOMEBREW_FFMPEG}")
-message(STATUS "Homebrew lz4:      ${HOMEBREW_LZ4}")
-message(STATUS "Homebrew zstd:     ${HOMEBREW_ZSTD}")
-message(STATUS "Homebrew freetype: ${HOMEBREW_FREETYPE}")
-message(STATUS "Homebrew curl:     ${HOMEBREW_CURL}")
-
-# AUDIT REFERENCE: Section 10.2 — Find system packages (paths passed via workflow)
-find_package(PNG QUIET)
-if(NOT PNG_FOUND)
-    message(STATUS "PNG not found via find_package — using brew path ${HOMEBREW_LIBPNG}")
-endif()
+# NOTE: No Homebrew libraries — all dependencies use iOS SDK frameworks
+# or 3rdparty source builds. Homebrew .dylibs are macOS binaries and
+# cannot be linked into iOS targets.
 
 # AUDIT REFERENCE: Section 1.5 — Core emulator target
 add_library(bionicsx2_core STATIC
@@ -181,27 +163,24 @@ add_library(bionicsx2_core STATIC
     metal/FrameSync.mm
 )
 
-# AUDIT REFERENCE: Section 10.2 — iOS frameworks
+# AUDIT REFERENCE: Section 10.2 — iOS SDK frameworks (no Homebrew dylibs)
+# Homebrew .dylibs are macOS binaries and cannot be linked into iOS targets.
+# All dependencies use iOS native frameworks or 3rdparty source builds.
 target_link_libraries(bionicsx2_core PUBLIC
-    "-framework Metal"          # Audit Sec 3, 4
-    "-framework MetalKit"       # Audit Sec 4.2
-    "-framework UIKit"          # Audit Sec 4.3
-    "-framework QuartzCore"     # Audit Sec 4.3 (CAMetalLayer)
-    "-framework AVFoundation"   # Audit Sec 9.2
-    "-framework GameController" # Audit Sec 8.3
-    "-framework Foundation"     # Audit Sec 1.3
-    $<$<BOOL:${PNG_LIBRARY}>:${PNG_LIBRARY}>
-    ${HOMEBREW_LIBPNG}/lib/libpng.dylib
-    ${HOMEBREW_FFMPEG}/lib/libavcodec.dylib
-    ${HOMEBREW_FFMPEG}/lib/libavformat.dylib
-    ${HOMEBREW_FFMPEG}/lib/libavutil.dylib
-    ${HOMEBREW_FFMPEG}/lib/libswscale.dylib
-    ${HOMEBREW_LZ4}/lib/liblz4.dylib
-    ${HOMEBREW_ZSTD}/lib/libzstd.dylib
-    ${HOMEBREW_FREETYPE}/lib/libfreetype.dylib
-    ${HOMEBREW_CURL}/lib/libcurl.dylib
-    ${HOMEBREW_LIBJPEG}/lib/libjpeg.dylib
-    /opt/homebrew/opt/webp/lib/libwebp.dylib
+    "-framework Foundation"
+    "-framework UIKit"
+    "-framework Metal"
+    "-framework MetalKit"
+    "-framework QuartzCore"
+    "-framework AVFoundation"
+    "-framework AudioToolbox"
+    "-framework GameController"
+    "-framework ImageIO"
+    "-framework CoreFoundation"
+    "-framework CoreGraphics"
+    "-framework CoreVideo"
+    "-framework CFNetwork"
+    "-framework SystemConfiguration"
 )
 
 # AUDIT REFERENCE: Section 10.2 — Compile options
@@ -259,16 +238,6 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/cpuinfo/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/rcheevos/include
-    ${HOMEBREW_LIBPNG}/include
-    ${HOMEBREW_FFMPEG}/include
-    ${HOMEBREW_LZ4}/include
-    ${HOMEBREW_ZSTD}/include
-    ${HOMEBREW_FREETYPE}/include/freetype2
-    ${HOMEBREW_CURL}/include
-    ${HOMEBREW_LIBJPEG}/include
-    /opt/homebrew/opt/webp/include
-    /opt/homebrew/opt/sdl3/include
-    /opt/homebrew/opt/rapidyaml/include
     ${CMAKE_SOURCE_DIR}/src/stubs
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/demangler/include
 )

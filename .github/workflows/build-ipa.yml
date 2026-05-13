@@ -26,34 +26,19 @@ jobs:
           submodules: recursive
 
       # AUDIT REFERENCE: Section 13.6 — Install build dependencies
+      # NOTE: No Homebrew library dylibs — iOS SDK frameworks + 3rdparty sources only
       - name: Install dependencies
         run: |
           brew install \
-            cmake ninja \
-            libpng \
-            libjpeg \
-            ffmpeg \
-            lz4 \
-            zstd \
-            curl \
-            webp \
-            freetype \
-            sdl3 \
-            shaderc \
-            rapidyaml
+            cmake ninja
 
       # AUDIT REFERENCE: Section 10.2 — Resolve iOS SDK path via xcrun
       # Must be done before cmake — toolchain files run before compiler init
       - name: Get iOS SDK path
         run: echo "IOS_SDK=$(xcrun --sdk iphoneos --show-sdk-path)" >> $GITHUB_ENV
 
-      # AUDIT REFERENCE: Section 10.2 — Set library paths for system deps
-      - name: Set library paths
-        run: |
-          echo "PNG_DIR=$(brew --prefix libpng)" >> $GITHUB_ENV
-          echo "CMAKE_PREFIX_PATH=$(brew --prefix)" >> $GITHUB_ENV
-
       # AUDIT REFERENCE: Section 10.2 — CMake configure with iOS toolchain
+      # All dependencies use iOS SDK frameworks or 3rdparty source builds
       - name: Configure CMake
         run: |
           cmake -S . -B build \
@@ -67,24 +52,7 @@ jobs:
             -DCMAKE_C_COMPILER=$(xcrun --find clang) \
             -DCMAKE_CXX_COMPILER=$(xcrun --find clang++) \
             -DCMAKE_C_COMPILER_TARGET=arm64-apple-ios15.0 \
-            -DCMAKE_CXX_COMPILER_TARGET=arm64-apple-ios15.0 \
-            -DPNG_PNG_INCLUDE_DIR=${{ env.PNG_DIR }}/include \
-            -DPNG_LIBRARY=${{ env.PNG_DIR }}/lib/libpng.dylib \
-            -DAVCODEC_INCLUDE_DIR=$(brew --prefix ffmpeg)/include \
-            -DAVFORMAT_INCLUDE_DIR=$(brew --prefix ffmpeg)/include \
-            -DAVUTIL_INCLUDE_DIR=$(brew --prefix ffmpeg)/include \
-            -DSWSCALE_INCLUDE_DIR=$(brew --prefix ffmpeg)/include \
-            -DLZ4_INCLUDE_DIR=$(brew --prefix lz4)/include \
-            -DLZ4_LIBRARY=$(brew --prefix lz4)/lib/liblz4.dylib \
-            -DZSTD_INCLUDE_DIR=$(brew --prefix zstd)/include \
-            -DZSTD_LIBRARY=$(brew --prefix zstd)/lib/libzstd.dylib \
-            -DCURL_INCLUDE_DIR=$(brew --prefix curl)/include \
-            -DCURL_LIBRARY=$(brew --prefix curl)/lib/libcurl.dylib \
-            -DWEBP_INCLUDE_DIR=$(brew --prefix webp)/include \
-            -DFREETYPE_INCLUDE_DIRS=$(brew --prefix freetype)/include/freetype2 \
-            -DFREETYPE_LIBRARY=$(brew --prefix freetype)/lib/libfreetype.dylib \
-            -DSDL3_DIR=$(brew --prefix sdl3)/lib/cmake/SDL3 \
-            -DCMAKE_PREFIX_PATH=${{ env.CMAKE_PREFIX_PATH }}
+            -DCMAKE_CXX_COMPILER_TARGET=arm64-apple-ios15.0
 
       # AUDIT REFERENCE: Section 10.3 — Build for iOS arm64
       - name: Build
