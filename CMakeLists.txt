@@ -72,6 +72,24 @@ add_library(bionicsx2_core STATIC
 
     # GS Core (Audit Sec 2.4 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GS.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSBlock.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSCapture.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSClut.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSDrawingContext.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSDrawingEnvironment.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSDump.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSLocalMemory.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSLocalMemoryMultiISA.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSLzma.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSPerfMon.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSPng.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSRingHeap.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSState.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSTables.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSUtil.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSVector.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSXXH.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/MultiISA.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/MTGS.cpp
 
     # GS Renderer Common (Audit Sec 2.4 — GREEN)
@@ -205,6 +223,7 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/vixl/include
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/lzma/include
 )
 
 # AUDIT REFERENCE: Section 10.2 — Swift UI frontend target
