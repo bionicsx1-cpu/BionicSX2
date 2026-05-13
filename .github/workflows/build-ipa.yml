@@ -30,16 +30,26 @@ jobs:
         run: |
           brew install cmake ninja
 
+      # AUDIT REFERENCE: Section 10.2 — Resolve iOS SDK path via xcrun
+      # Must be done before cmake — toolchain files run before compiler init
+      - name: Get iOS SDK path
+        run: echo "IOS_SDK=$(xcrun --sdk iphoneos --show-sdk-path)" >> $GITHUB_ENV
+
       # AUDIT REFERENCE: Section 10.2 — CMake configure with iOS toolchain
       - name: Configure CMake
         run: |
           cmake -S . -B build \
             -G Ninja \
-            -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_SYSTEM_NAME=iOS \
             -DCMAKE_OSX_ARCHITECTURES=arm64 \
             -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 \
-            -DCMAKE_OSX_SYSROOT=iphoneos
+            -DCMAKE_OSX_SYSROOT=${{ env.IOS_SDK }} \
+            -DCMAKE_CXX_STANDARD=20 \
+            -DCMAKE_C_COMPILER=$(xcrun --find clang) \
+            -DCMAKE_CXX_COMPILER=$(xcrun --find clang++) \
+            -DCMAKE_C_COMPILER_TARGET=arm64-apple-ios15.0 \
+            -DCMAKE_CXX_COMPILER_TARGET=arm64-apple-ios15.0
 
       # AUDIT REFERENCE: Section 10.3 — Build for iOS arm64
       - name: Build
