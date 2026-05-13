@@ -1,1 +1,0 @@
-/usr/bin/clang++ -fPIC -O3 -DNDEBUG -shared -Wl,-soname,libbionicsx2_ui.so -o libbionicsx2_ui.so  libbionicsx2_core.a -framework Metal -framework MetalKit -framework UIKit -framework QuartzCore -framework AVFoundation -framework GameController -framework Foundation 

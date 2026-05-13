@@ -1,1 +1,0 @@
-/usr/bin/clang++ -O3 -DNDEBUG -o BionicSX2  -Wl,-rpath,/workspaces/BionicSX2/BionicSx2/build libbionicsx2_ui.so libbionicsx2_core.a -framework Metal -framework MetalKit -framework UIKit -framework QuartzCore -framework AVFoundation -framework GameController -framework Foundation 

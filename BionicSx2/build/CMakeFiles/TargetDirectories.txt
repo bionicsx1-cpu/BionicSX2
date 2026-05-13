@@ -1,5 +1,0 @@
-/workspaces/BionicSX2/BionicSx2/build/CMakeFiles/bionicsx2_core.dir
-/workspaces/BionicSX2/BionicSx2/build/CMakeFiles/bionicsx2_ui.dir
-/workspaces/BionicSX2/BionicSx2/build/CMakeFiles/BionicSX2.dir
-/workspaces/BionicSX2/BionicSx2/build/CMakeFiles/edit_cache.dir
-/workspaces/BionicSX2/BionicSx2/build/CMakeFiles/rebuild_cache.dir
