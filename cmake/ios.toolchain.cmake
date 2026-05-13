@@ -7,8 +7,9 @@ set(CMAKE_SYSTEM_NAME iOS)
 set(CMAKE_SYSTEM_VERSION 15.0)
 set(CMAKE_OSX_ARCHITECTURES arm64)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 15.0)
-set(CMAKE_C_COMPILER_TARGET arm64-apple-ios15.0)
-set(CMAKE_CXX_COMPILER_TARGET arm64-apple-ios15.0)
+# Force target triple via flags — CMAKE_C_COMPILER_TARGET is ignored by Ninja generator
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target arm64-apple-ios15.0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target arm64-apple-ios15.0")
 execute_process(
     COMMAND xcrun --sdk iphoneos --show-sdk-path
     OUTPUT_VARIABLE CMAKE_OSX_SYSROOT
