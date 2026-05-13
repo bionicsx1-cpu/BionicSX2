@@ -13,6 +13,7 @@
 #include <pthread.h>
 #include <sys/sysctl.h>
 
+#include <thread>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>

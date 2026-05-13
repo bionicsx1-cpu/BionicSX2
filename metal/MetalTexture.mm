@@ -56,7 +56,7 @@ public:
         if (!m_texture || !data) return false;
 
         id<MTLBlitCommandEncoder> blit = [cmdBuf blitCommandEncoder];
-        [blit copyFromBuffer:(id<MTLBuffer>)data
+        [blit copyFromBuffer:(__bridge id<MTLBuffer>)data
                sourceOffset:0
           sourceBytesPerRow:bytesPerRow
         sourceBytesPerImage:bytesPerRow * m_height

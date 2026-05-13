@@ -4,10 +4,13 @@
 
 #pragma once
 
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
 #import <Metal/Metal.h>
 #import <QuartzCore/QuartzCore.h>
+#endif
 // PORTED: #import <AppKit/AppKit.h> removed (Audit Section 4.3)
-// PORTED: #import <UIKit/UIKit.h> added for UIView
+// PORTED: #import <UIKit/UIKit.h> added for UIView (wrapped in __OBJC__ guard)
 
 #include <simd/simd.h>
 #include <cstdint>
