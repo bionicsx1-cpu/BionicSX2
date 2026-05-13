@@ -201,6 +201,7 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/zlib
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/include
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/vixl/include
 )
 
 # AUDIT REFERENCE: Section 10.2 — Swift UI frontend target
