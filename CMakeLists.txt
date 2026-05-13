@@ -156,6 +156,7 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fast_float/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/xxhash
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/zlib
 )
