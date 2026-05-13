@@ -22,6 +22,7 @@ execute_process(COMMAND brew --prefix lz4       OUTPUT_VARIABLE HOMEBREW_LZ4    
 execute_process(COMMAND brew --prefix zstd      OUTPUT_VARIABLE HOMEBREW_ZSTD     OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(COMMAND brew --prefix freetype  OUTPUT_VARIABLE HOMEBREW_FREETYPE OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(COMMAND brew --prefix curl      OUTPUT_VARIABLE HOMEBREW_CURL     OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND brew --prefix libjpeg   OUTPUT_VARIABLE HOMEBREW_LIBJPEG  OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 message(STATUS "Homebrew libpng:   ${HOMEBREW_LIBPNG}")
 message(STATUS "Homebrew ffmpeg:   ${HOMEBREW_FFMPEG}")
@@ -199,6 +200,7 @@ target_link_libraries(bionicsx2_core PUBLIC
     ${HOMEBREW_ZSTD}/lib/libzstd.dylib
     ${HOMEBREW_FREETYPE}/lib/libfreetype.dylib
     ${HOMEBREW_CURL}/lib/libcurl.dylib
+    ${HOMEBREW_LIBJPEG}/lib/libjpeg.dylib
     /opt/homebrew/opt/webp/lib/libwebp.dylib
 )
 
@@ -263,6 +265,7 @@ target_include_directories(bionicsx2_core PRIVATE
     ${HOMEBREW_ZSTD}/include
     ${HOMEBREW_FREETYPE}/include/freetype2
     ${HOMEBREW_CURL}/include
+    ${HOMEBREW_LIBJPEG}/include
     /opt/homebrew/opt/webp/include
     /opt/homebrew/opt/sdl3/include
     /opt/homebrew/opt/rapidyaml/include
