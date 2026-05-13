@@ -148,10 +148,8 @@ endif()
 # src/ is the root for all PCSX2 quoted includes (#include "Common.h", etc.)
 target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/common
-    ${CMAKE_SOURCE_DIR}/src/pcsx2
-    ${CMAKE_SOURCE_DIR}/src/pcsx2/DebugTools
     ${CMAKE_SOURCE_DIR}/src/x86
+    ${CMAKE_SOURCE_DIR}/src/pcsx2/DebugTools
     ${CMAKE_SOURCE_DIR}/metal
     ${CMAKE_SOURCE_DIR}/pcsx2
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2
