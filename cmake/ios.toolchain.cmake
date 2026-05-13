@@ -7,7 +7,11 @@ set(CMAKE_SYSTEM_NAME iOS)
 set(CMAKE_SYSTEM_VERSION 15.0)
 set(CMAKE_OSX_ARCHITECTURES arm64)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 15.0)
-set(CMAKE_OSX_SYSROOT iphoneos)
+execute_process(
+    COMMAND xcrun --sdk iphoneos --show-sdk-path
+    OUTPUT_VARIABLE CMAKE_OSX_SYSROOT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
 
 # AUDIT REFERENCE: Section 10.2 — Metal compiler flags for .metal → .metallib
 set(CMAKE_METAL_COMPILER xcrun -sdk iphoneos metal)

@@ -12,7 +12,7 @@ set(CMAKE_OSX_ARCHITECTURES arm64)
 
 # AUDIT REFERENCE: Section 10.2 — Enable Objective-C++ for .mm files
 enable_language(CXX)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # AUDIT REFERENCE: Section 1.5 — Core emulator target
@@ -143,6 +143,10 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/common
     ${CMAKE_CURRENT_SOURCE_DIR}/metal
+    ${CMAKE_CURRENT_SOURCE_DIR}/pcsx2/3rdparty/fast_float/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/pcsx2/3rdparty/fmt/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/pcsx2/3rdparty/xxhash
+    ${CMAKE_CURRENT_SOURCE_DIR}/pcsx2/3rdparty/zlib
 )
 
 # AUDIT REFERENCE: Section 10.2 — Swift UI frontend target
