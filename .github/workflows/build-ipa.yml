@@ -16,9 +16,6 @@ jobs:
     # Required for ARM64 iOS toolchain support
     runs-on: macos-14
 
-    defaults:
-      run:
-        working-directory: BionicSx2
 
     steps:
       # AUDIT REFERENCE: Section 13.6 — Checkout with submodules
@@ -67,7 +64,7 @@ jobs:
         with:
           name: BionicSX2-iOS-IPA
           path: |
-            BionicSx2/build/BionicSX2.ipa
-            BionicSx2/build/BionicSX2.app
+            build/BionicSX2.ipa
+            build/BionicSX2.app
           retention-days: 30
           if-no-files-found: warn
