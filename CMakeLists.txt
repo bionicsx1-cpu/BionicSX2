@@ -18,73 +18,114 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # AUDIT REFERENCE: Section 1.5 — Core emulator target
 add_library(bionicsx2_core STATIC
     # EE Core (Audit Sec 2.1 — GREEN)
-    src/R5900.cpp
-    src/R5900OpcodeImpl.cpp
-    src/R5900OpcodeTables.cpp
-    src/Interpreter.cpp
-    src/Memory.cpp
-    src/MMI.cpp
-    src/COP0.cpp
-    src/COP2.cpp
-    src/Counters.cpp
-    src/Dmac.cpp
-    src/FPU.cpp
-    src/Gif.cpp
-    src/Gif_Unit.cpp
-    src/Hw.cpp
-    src/HwRead.cpp
-    src/HwWrite.cpp
-    src/SPR.cpp
-    src/Vif.cpp
-    src/Vif_Codes.cpp
-    src/Vif_Transfer.cpp
-    src/Vif_Unpack.cpp
-    src/Vif0_Dma.cpp
-    src/Vif1_Dma.cpp
-    src/Vif1_MFIFO.cpp
-    src/vtlb.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/R5900.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/R5900OpcodeImpl.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/R5900OpcodeTables.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Interpreter.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Memory.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/MMI.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/COP0.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/COP2.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Counters.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Dmac.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/FPU.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Gif.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Gif_Unit.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Hw.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/HwRead.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/HwWrite.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPR.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif_Codes.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif_Transfer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif_Unpack.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif0_Dma.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif1_Dma.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif1_MFIFO.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/vtlb.cpp
 
     # VU Units (Audit Sec 2.2 — GREEN, interpreter paths only)
-    src/VU0.cpp
-    src/VU0micro.cpp
-    src/VU0microInterp.cpp
-    src/VU1micro.cpp
-    src/VU1microInterp.cpp
-    src/VUmicro.cpp
-    src/VUmicroMem.cpp
-    src/VUflags.cpp
-    src/VUops.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VU0.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VU0micro.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VU0microInterp.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VU1micro.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VU1microInterp.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VUmicro.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VUmicroMem.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VUflags.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VUops.cpp
 
     # IOP (Audit Sec 2.3 — GREEN)
-    src/R3000A.cpp
-    src/R3000AInterpreter.cpp
-    src/R3000AOpcodeTables.cpp
-    src/IopBios.cpp
-    src/IopCounters.cpp
-    src/IopDma.cpp
-    src/IopGte.cpp
-    src/IopHw.cpp
-    src/IopMem.cpp
-    src/IopIrq.cpp
-    src/ps2/Iop/IopHwRead.cpp
-    src/ps2/Iop/IopHwWrite.cpp
-    src/ps2/Iop/PsxBios.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/R3000A.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/R3000AInterpreter.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/R3000AOpcodeTables.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IopBios.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IopCounters.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IopDma.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IopGte.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IopHw.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IopMem.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IopIrq.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ps2/Iop/IopHwRead.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ps2/Iop/IopHwWrite.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ps2/Iop/PsxBios.cpp
 
     # GS Core (Audit Sec 2.4 — GREEN)
-    src/GS/GS.cpp
-    src/MTGS.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GS.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/MTGS.cpp
 
-    # SPU2 (Audit Sec 2.5 — GREEN)
-    src/SPU2/spu2.cpp
-    src/SPU2/spu2sys.cpp
-    src/SPU2/spu2freeze.cpp
-    src/SPU2/ADSR.cpp
-    src/SPU2/Dma.cpp
-    src/SPU2/Mixer.cpp
-    src/SPU2/ReadInput.cpp
-    src/SPU2/RegTable.cpp
-    src/SPU2/Reverb.cpp
-    src/SPU2/ReverbResample.cpp
+    # GS Renderer Common (Audit Sec 2.4 — GREEN)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Common/GSDevice.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Common/GSDirtyRect.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Common/GSFunctionMap.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Common/GSRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Common/GSTexture.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Common/GSVertexTrace.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Common/GSVertexTraceFMM.cpp
+
+    # GS Renderer HW (Audit Sec 2.4 — GREEN)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSHwHack.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSRendererHW.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSRendererHWMultiISA.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSTextureCache.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSTextureReplacementLoaders.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSTextureReplacements.cpp
+
+    # GS Renderer SW (Audit Sec 2.4 — GREEN)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanline.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.all.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.arm64.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSRasterizer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSRendererSW.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.all.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.arm64.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSTextureCacheSW.cpp
+
+    # GS Renderer Null (Audit Sec 2.4 — GREEN)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Null/GSRendererNull.cpp
+
+    # Common Library (cross-platform subset)
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/AlignedMalloc.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Assertions.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Console.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Error.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/FileSystem.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/HostSys.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Image.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/MD5Digest.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/MemoryInterface.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/MemorySettingsInterface.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Perf.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/ProgressCallback.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/ReadbackSpinManager.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/SettingsWrapper.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/SmallString.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/StringUtil.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/TextureDecompress.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Timer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/WAVWriter.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/WindowInfo.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/YAML.cpp
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)
     ios/platform/iOSVMManager.mm
@@ -149,7 +190,6 @@ endif()
 target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/x86
-    ${CMAKE_SOURCE_DIR}/src/pcsx2/DebugTools
     ${CMAKE_SOURCE_DIR}/metal
     ${CMAKE_SOURCE_DIR}/pcsx2
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2
