@@ -21,7 +21,7 @@ void* HostSys_Mmap(size_t size)
         NSLog(@"[BionicSX2] vm_allocate failed for size %zu — error %d (Audit Sec 6.2)", size, kr);
         return nullptr;
     }
-    NSLog(@"[BionicSX2] vm_allocate: %zu bytes at 0x%llx", size, addr);
+    NSLog(@"[BionicSX2] vm_allocate: %zu bytes at 0x%lx", size, addr);
     return reinterpret_cast<void*>(addr);
 }
 // Audit Section 6.2 — Replace munmap with vm_deallocate
@@ -73,8 +73,10 @@ void* HostSys_CreateSharedMemory(const char* name, size_t size)
 {
     // iOS does not support POSIX shared memory (shm_open) in the sandbox.
     // Use vm_allocate with shared memory entry for inter-process sharing.
+    // mach_make_memory_entry_64 expects memory_object_size_t* (uint64_t*)
     mach_port_t mem_entry;
-    kern_return_t kr = mach_make_memory_entry_64(mach_task_self(), &size,
+    memory_object_size_t entry_size = (memory_object_size_t)size;
+    kern_return_t kr = mach_make_memory_entry_64(mach_task_self(), &entry_size,
         (memory_object_offset_t)0, MAP_MEM_NAMED_CREATE | VM_PROT_DEFAULT, &mem_entry, MACH_PORT_NULL);
     if (kr != KERN_SUCCESS)
     {
