@@ -35,6 +35,12 @@ jobs:
       - name: Get iOS SDK path
         run: echo "IOS_SDK=$(xcrun --sdk iphoneos --show-sdk-path)" >> $GITHUB_ENV
 
+      # AUDIT REFERENCE: Section 10.2 — Set library paths for system deps
+      - name: Set library paths
+        run: |
+          echo "PNG_DIR=$(brew --prefix libpng)" >> $GITHUB_ENV
+          echo "CMAKE_PREFIX_PATH=$(brew --prefix)" >> $GITHUB_ENV
+
       # AUDIT REFERENCE: Section 10.2 — CMake configure with iOS toolchain
       - name: Configure CMake
         run: |
@@ -49,7 +55,10 @@ jobs:
             -DCMAKE_C_COMPILER=$(xcrun --find clang) \
             -DCMAKE_CXX_COMPILER=$(xcrun --find clang++) \
             -DCMAKE_C_COMPILER_TARGET=arm64-apple-ios15.0 \
-            -DCMAKE_CXX_COMPILER_TARGET=arm64-apple-ios15.0
+            -DCMAKE_CXX_COMPILER_TARGET=arm64-apple-ios15.0 \
+            -DPNG_PNG_INCLUDE_DIR=${{ env.PNG_DIR }}/include \
+            -DPNG_LIBRARY=${{ env.PNG_DIR }}/lib/libpng.dylib \
+            -DCMAKE_PREFIX_PATH=${{ env.CMAKE_PREFIX_PATH }}
 
       # AUDIT REFERENCE: Section 10.3 — Build for iOS arm64
       - name: Build

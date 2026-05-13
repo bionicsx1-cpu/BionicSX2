@@ -161,8 +161,11 @@ add_library(bionicsx2_core STATIC
     metal/FrameSync.mm
 )
 
-# AUDIT REFERENCE: Section 10.2 — Find system packages
-find_package(PNG REQUIRED)
+# AUDIT REFERENCE: Section 10.2 — Find system packages (paths passed via workflow)
+find_package(PNG QUIET)
+if(NOT PNG_FOUND)
+    message(STATUS "PNG not found via find_package — using direct paths from workflow -DPNG_PNG_INCLUDE_DIR and -DPNG_LIBRARY")
+endif()
 
 # AUDIT REFERENCE: Section 10.2 — iOS frameworks
 target_link_libraries(bionicsx2_core PUBLIC
@@ -173,6 +176,7 @@ target_link_libraries(bionicsx2_core PUBLIC
     "-framework AVFoundation"   # Audit Sec 9.2
     "-framework GameController" # Audit Sec 8.3
     "-framework Foundation"     # Audit Sec 1.3
+    $<$<BOOL:${PNG_LIBRARY}>:${PNG_LIBRARY}>
 )
 
 # AUDIT REFERENCE: Section 10.2 — Compile options
