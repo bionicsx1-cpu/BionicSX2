@@ -1,25 +1,21 @@
 // PORTED FROM: common/Linux/LnxHostSys.cpp — BionicSX2 iOS Port
 // AUDIT REFERENCE: Sections 6.2, 6.3
 // STATUS: YELLOW — mmap/mprotect replaced with vm_allocate/vm_protect
-
 #import <Foundation/Foundation.h>
+#include <mach/vm_map.h>
 #import <mach/mach.h>
-#import <mach/mach_vm.h>
 #import <sys/sysctl.h>
 #import <pthread.h>
-
 #include <cstddef>
 #include <cstdlib>
-
 // Audit Section 6.2: iOS-safe memory allocation using Mach VM API
 // macOS LnxHostSys.cpp uses mmap/mprotect — these work on iOS but MAP_JIT
 // requires entitlement. For interpreter-only Phase 1, we use vm_allocate/vm_protect.
-
 // Audit Section 6.2 — Replace mmap with vm_allocate
 void* HostSys_Mmap(size_t size)
 {
-    mach_vm_address_t addr = 0;
-    kern_return_t kr = mach_vm_allocate(mach_task_self(), &addr, size, VM_FLAGS_ANYWHERE);
+    vm_address_t addr = 0;
+    kern_return_t kr = vm_allocate(mach_task_self(), &addr, size, VM_FLAGS_ANYWHERE);
     if (kr != KERN_SUCCESS)
     {
         NSLog(@"[BionicSX2] vm_allocate failed for size %zu — error %d (Audit Sec 6.2)", size, kr);
@@ -28,23 +24,21 @@ void* HostSys_Mmap(size_t size)
     NSLog(@"[BionicSX2] vm_allocate: %zu bytes at 0x%llx", size, addr);
     return reinterpret_cast<void*>(addr);
 }
-
 // Audit Section 6.2 — Replace munmap with vm_deallocate
 void HostSys_Munmap(void* addr, size_t size)
 {
     if (!addr) return;
-    kern_return_t kr = mach_vm_deallocate(mach_task_self(), reinterpret_cast<mach_vm_address_t>(addr), size);
+    kern_return_t kr = vm_deallocate(mach_task_self(), reinterpret_cast<vm_address_t>(addr), size);
     if (kr != KERN_SUCCESS)
     {
         NSLog(@"[BionicSX2] vm_deallocate failed at %p — error %d (Audit Sec 6.2)", addr, kr);
     }
 }
-
 // Audit Section 6.2 — Replace mprotect with vm_protect
 bool HostSys_MemProtect(void* addr, size_t size, int prot)
 {
     // prot: VM_PROT_READ, VM_PROT_WRITE, VM_PROT_EXECUTE
-    kern_return_t kr = mach_vm_protect(mach_task_self(), reinterpret_cast<mach_vm_address_t>(addr), size, FALSE, prot);
+    kern_return_t kr = vm_protect(mach_task_self(), reinterpret_cast<vm_address_t>(addr), size, FALSE, prot);
     if (kr != KERN_SUCCESS)
     {
         NSLog(@"[BionicSX2] vm_protect failed at %p — error %d (Audit Sec 6.2)", addr, kr);
@@ -52,7 +46,6 @@ bool HostSys_MemProtect(void* addr, size_t size, int prot)
     }
     return true;
 }
-
 // Audit Section 6.3: MAP_JIT handling — not available without entitlement
 // Phase 1: JIT disabled — log and return gracefully, do NOT crash
 void* HostSys_MmapJIT(size_t size)
@@ -61,7 +54,6 @@ void* HostSys_MmapJIT(size_t size)
     // Fall back to regular vm_allocate without MAP_JIT
     return HostSys_Mmap(size);
 }
-
 // Audit Section 6.2: Runtime page size via sysctl (works identically on iOS)
 size_t HostSys_GetPageSize(void)
 {
@@ -76,7 +68,6 @@ size_t HostSys_GetPageSize(void)
     }
     return s_pagesize;
 }
-
 // Audit Section 6.2: Shared memory creation — Mach shared memory
 void* HostSys_CreateSharedMemory(const char* name, size_t size)
 {
@@ -91,18 +82,17 @@ void* HostSys_CreateSharedMemory(const char* name, size_t size)
         return nullptr;
     }
     // Map the entry into process address space
-    mach_vm_address_t addr = 0;
-    kr = mach_vm_map(mach_task_self(), &addr, size, 0, VM_FLAGS_ANYWHERE,
+    vm_address_t addr = 0;
+    kr = vm_map(mach_task_self(), &addr, size, 0, VM_FLAGS_ANYWHERE,
                      mem_entry, 0, FALSE, VM_PROT_READ | VM_PROT_WRITE,
                      VM_PROT_READ | VM_PROT_WRITE, VM_INHERIT_NONE);
     if (kr != KERN_SUCCESS)
     {
-        NSLog(@"[BionicSX2] mach_vm_map failed for shared memory — error %d (Audit Sec 6.2)", kr);
+        NSLog(@"[BionicSX2] vm_map failed for shared memory — error %d (Audit Sec 6.2)", kr);
         return nullptr;
     }
     return reinterpret_cast<void*>(addr);
 }
-
 // Audit Section 6.2: Destroy shared memory
 void HostSys_DestroySharedMemory(void* ptr, size_t size)
 {
