@@ -167,10 +167,10 @@ add_library(bionicsx2_core STATIC
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)
     ios/platform/iOSVMManager.mm
-    ios/platform/HostSys_iOS.cpp
+    ios/platform/HostSys_iOS.mm
     ios/platform/CocoaTools.mm
-    ios/platform/AudioStream_iOS.cpp
-    ios/platform/Filesystem_iOS.cpp
+    ios/platform/AudioStream_iOS.mm
+    ios/platform/Filesystem_iOS.mm
     ios/platform/Threading_iOS.cpp
     ios/platform/PageFaultHandler.cpp
 
