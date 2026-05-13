@@ -28,7 +28,7 @@ jobs:
       # AUDIT REFERENCE: Section 13.6 — Install build dependencies
       - name: Install dependencies
         run: |
-          brew install cmake ninja
+          brew install cmake ninja libpng
 
       # AUDIT REFERENCE: Section 10.2 — Resolve iOS SDK path via xcrun
       # Must be done before cmake — toolchain files run before compiler init

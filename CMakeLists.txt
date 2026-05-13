@@ -143,6 +143,9 @@ add_library(bionicsx2_core STATIC
     metal/FrameSync.mm
 )
 
+# AUDIT REFERENCE: Section 10.2 — Find system packages
+find_package(PNG REQUIRED)
+
 # AUDIT REFERENCE: Section 10.2 — iOS frameworks
 target_link_libraries(bionicsx2_core PUBLIC
     "-framework Metal"          # Audit Sec 3, 4
