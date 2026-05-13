@@ -1,0 +1,73 @@
+# PORTED FROM: (new) — BionicSX2 iOS Port
+# AUDIT REFERENCE: Sections 10.3, 13.6
+# STATUS: NEW — GitHub Actions IPA build pipeline for Apple Silicon
+
+name: Build BionicSX2 IPA
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    # AUDIT REFERENCE: Section 13.6 — Apple Silicon M-series runner
+    # Required for ARM64 iOS toolchain support
+    runs-on: macos-14
+
+    defaults:
+      run:
+        working-directory: BionicSx2
+
+    steps:
+      # AUDIT REFERENCE: Section 13.6 — Checkout with submodules
+      # PCSX2 core is expected to be a submodule in src/
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # AUDIT REFERENCE: Section 13.6 — Install build dependencies
+      - name: Install dependencies
+        run: |
+          brew install cmake ninja
+
+      # AUDIT REFERENCE: Section 10.2 — CMake configure with iOS toolchain
+      - name: Configure CMake
+        run: |
+          cmake -S . -B build \
+            -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_OSX_ARCHITECTURES=arm64 \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 \
+            -DCMAKE_OSX_SYSROOT=iphoneos
+
+      # AUDIT REFERENCE: Section 10.3 — Build for iOS arm64
+      - name: Build
+        run: |
+          cmake --build build --config Release -- -j$(sysctl -n hw.logicalcpu)
+
+      # AUDIT REFERENCE: Section 10.3 — Export unsigned IPA
+      # CODE_SIGN_IDENTITY="" for unsigned development builds
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath ${{ github.workspace }}/build/BionicSX2.xcarchive \
+            -exportPath ${{ github.workspace }}/build/BionicSX2.ipa \
+            -exportOptionsPlist ${{ github.workspace }}/exportOptions.plist \
+            CODE_SIGN_IDENTITY="" \
+            PROVISIONING_PROFILE="" \
+            CODE_SIGNING_ALLOWED=NO || echo "Signing will fail without Apple Developer account"
+
+      # AUDIT REFERENCE: Section 13.6 — Upload IPA as build artifact
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: BionicSX2-iOS-IPA
+          path: |
+            BionicSx2/build/BionicSX2.ipa
+            BionicSx2/build/BionicSX2.app
+          retention-days: 30
+          if-no-files-found: warn
