@@ -132,11 +132,9 @@ add_library(bionicsx2_core STATIC
 
     # GS Renderer SW (Audit Sec 2.4 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanline.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.all.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.arm64.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSRasterizer.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSRendererSW.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.all.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.arm64.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSTextureCacheSW.cpp
 
