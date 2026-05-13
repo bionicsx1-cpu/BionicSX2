@@ -177,6 +177,10 @@ target_link_libraries(bionicsx2_core PUBLIC
     "-framework GameController" # Audit Sec 8.3
     "-framework Foundation"     # Audit Sec 1.3
     $<$<BOOL:${PNG_LIBRARY}>:${PNG_LIBRARY}>
+    /opt/homebrew/opt/ffmpeg/lib/libavcodec.dylib
+    /opt/homebrew/opt/ffmpeg/lib/libavformat.dylib
+    /opt/homebrew/opt/ffmpeg/lib/libavutil.dylib
+    /opt/homebrew/opt/ffmpeg/lib/libswscale.dylib
 )
 
 # AUDIT REFERENCE: Section 10.2 — Compile options
@@ -228,6 +232,13 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/vixl/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/lzma/include
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/cubeb/include
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libchdr/include
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/cpuinfo/include
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/rcheevos/include
+    /opt/homebrew/opt/ffmpeg/include
 )
 
 # AUDIT REFERENCE: Section 10.2 — Swift UI frontend target

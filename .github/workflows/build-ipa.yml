@@ -28,7 +28,7 @@ jobs:
       # AUDIT REFERENCE: Section 13.6 — Install build dependencies
       - name: Install dependencies
         run: |
-          brew install cmake ninja libpng
+          brew install cmake ninja libpng ffmpeg
 
       # AUDIT REFERENCE: Section 10.2 — Resolve iOS SDK path via xcrun
       # Must be done before cmake — toolchain files run before compiler init
@@ -58,6 +58,10 @@ jobs:
             -DCMAKE_CXX_COMPILER_TARGET=arm64-apple-ios15.0 \
             -DPNG_PNG_INCLUDE_DIR=${{ env.PNG_DIR }}/include \
             -DPNG_LIBRARY=${{ env.PNG_DIR }}/lib/libpng.dylib \
+            -DAVCODEC_INCLUDE_DIR=$(brew --prefix ffmpeg)/include \
+            -DAVFORMAT_INCLUDE_DIR=$(brew --prefix ffmpeg)/include \
+            -DAVUTIL_INCLUDE_DIR=$(brew --prefix ffmpeg)/include \
+            -DSWSCALE_INCLUDE_DIR=$(brew --prefix ffmpeg)/include \
             -DCMAKE_PREFIX_PATH=${{ env.CMAKE_PREFIX_PATH }}
 
       # AUDIT REFERENCE: Section 10.3 — Build for iOS arm64
