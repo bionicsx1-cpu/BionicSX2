@@ -120,6 +120,13 @@ target_compile_options(bionicsx2_core PRIVATE
     -Wno-unknown-pragmas
 )
 
+# AUDIT REFERENCE: Fix 2 — Disable x86 recompiler includes at preprocessor level
+target_compile_definitions(bionicsx2_core PRIVATE
+    DISABLE_PCSX2_RECOMPILER=1
+    PCSX2_CORE=1
+    __POSIX__=1
+)
+
 # AUDIT REFERENCE: Section 10.2 — Exclude source files
 # EXCLUDED per audit (RED/N/A):
 #   pcsx2-qt/           — Qt frontend (RED — Audit Sec 1.2)
@@ -144,6 +151,7 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/common
     ${CMAKE_CURRENT_SOURCE_DIR}/src/pcsx2
     ${CMAKE_CURRENT_SOURCE_DIR}/src/pcsx2/DebugTools
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/x86
     ${CMAKE_CURRENT_SOURCE_DIR}/metal
     ${CMAKE_CURRENT_SOURCE_DIR}/pcsx2/3rdparty/fast_float/include
     ${CMAKE_CURRENT_SOURCE_DIR}/pcsx2/3rdparty/fmt/include

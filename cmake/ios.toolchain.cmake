@@ -3,18 +3,13 @@
 # STATUS: NEW — iOS cross-compilation toolchain configuration
 
 # AUDIT REFERENCE: Section 13.5 — iOS system name and architecture
+# CMAKE_SYSTEM_NAME=iOS tells CMake to use correct arm64-apple-ios target triple
+# Do NOT add redundant -target flags or CMAKE_C_COMPILER_TARGET — they conflict
 set(CMAKE_SYSTEM_NAME iOS)
 set(CMAKE_SYSTEM_VERSION 15.0)
 set(CMAKE_OSX_ARCHITECTURES arm64)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 15.0)
-# Force target triple via flags — CMAKE_C_COMPILER_TARGET is ignored by Ninja generator
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target arm64-apple-ios15.0")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target arm64-apple-ios15.0")
-execute_process(
-    COMMAND xcrun --sdk iphoneos --show-sdk-path
-    OUTPUT_VARIABLE CMAKE_OSX_SYSROOT
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+set(CMAKE_OSX_SYSROOT iphoneos)
 
 # AUDIT REFERENCE: Section 10.2 — Metal compiler flags for .metal → .metallib
 set(CMAKE_METAL_COMPILER xcrun -sdk iphoneos metal)
@@ -41,12 +36,3 @@ set(CMAKE_XCODE_ATTRIBUTE_GCC_ENABLE_OBJC_EXCEPTIONS "YES")
 # AUDIT REFERENCE: Section 10.2 — Metal shader compilation in Xcode
 set(CMAKE_XCODE_ATTRIBUTE_MTL_ENABLE_DEBUG_INFO "NO")
 set(CMAKE_XCODE_ATTRIBUTE_MTL_FAST_MATH "YES")
-
-# Find required Apple frameworks
-find_library(UIKIT_LIBRARY UIKit)
-find_library(METAL_LIBRARY Metal)
-find_library(METALKIT_LIBRARY MetalKit)
-find_library(QUARTZCORE_LIBRARY QuartzCore)
-find_library(AVFOUNDATION_LIBRARY AVFoundation)
-find_library(GAMECONTROLLER_LIBRARY GameController)
-find_library(FOUNDATION_LIBRARY Foundation)
