@@ -15,8 +15,6 @@ enable_language(CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# NOTE: No Homebrew libraries — all dependencies use iOS SDK frameworks
-# or 3rdparty source builds. Homebrew .dylibs are macOS binaries and
 # cannot be linked into iOS targets.
 
 # AUDIT REFERENCE: Section 1.5 — Core emulator target
@@ -163,8 +161,6 @@ add_library(bionicsx2_core STATIC
     metal/FrameSync.mm
 )
 
-# AUDIT REFERENCE: Section 10.2 — iOS SDK frameworks (no Homebrew dylibs)
-# Homebrew .dylibs are macOS binaries and cannot be linked into iOS targets.
 # All dependencies use iOS native frameworks or 3rdparty source builds.
 target_link_libraries(bionicsx2_core PUBLIC
     "-framework Foundation"
