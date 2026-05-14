@@ -63,12 +63,13 @@ u32 GSDumpReplayer::GetDumpCRC() { return 0; }
 void GSDumpReplayer::RenderUI() {}
 
 // ── isa_native GS SW rasterizer stubs (MULTI_ISA dispatch) ──
-class GSRasterizerData { public: static int s_counter; };
-class GSRasterizerList { public: static GSRasterizerList* Create(int) { return nullptr; } };
-int GSRasterizerData::s_counter = 0;
+#include <atomic>
+#include <memory>
 namespace isa_native {
-    using ::GSRasterizerData;
-    using ::GSRasterizerList;
+    class GSRasterizerData { public: static std::atomic<int> s_counter; };
+    class GSRasterizerList { public: static std::shared_ptr<GSRasterizerList> Create(int) { return nullptr; } };
+    class GSSingleRasterizer { public: GSSingleRasterizer() = default; void Draw(GSRasterizerData&) {} };
+    std::atomic<int> GSRasterizerData::s_counter{0};
 }
 
 // ── PGIF stubs ──────────────────────────────────────────────
@@ -167,6 +168,36 @@ namespace Host {
     void AddIconOSDMessage(std::string, const char*, std::string_view, float) {}
     void OnGameChanged(const std::string&, const std::string&, const std::string&, const std::string&, u32, u32) {}
     void CancelGameListRefresh() {}
+    void SetMouseMode(bool, bool) {}
+    void AddOSDMessage(std::string, float) {}
+    void RunOnCPUThread(std::function<void()> fn, bool) { if (fn) fn(); }
+    void ReportInfoAsync(std::string_view, std::string_view) {}
+    void OnSaveStateSaved(std::string_view) {}
+    void ReportErrorAsync(std::string_view, std::string_view) {}
+    void BeginPresentFrame() {}
+    void OnSaveStateLoaded(std::string_view, bool) {}
+    void RequestVMShutdown(bool, bool, bool) {}
+    void OnSaveStateLoading(std::string_view) {}
+    void ReleaseRenderWindow() {}
+    void SetDefaultUISettings(SettingsInterface&) {}
+    void OnInputDeviceConnected(std::string_view, std::string_view) {}
+    void CheckForSettingsChanges(const Pcsx2Config&) {}
+    void OnAchievementsRefreshed() {}
+    void PumpMessagesOnCPUThread() {}
+    std::string TranslatePluralToString(const char*, const char*, const char*, int) { return {}; }
+    void CommitBaseSettingChanges() {}
+    void RequestResizeHostDisplay(s32, s32) {}
+    void OnInputDeviceDisconnected(InputBindingKey, std::string_view) {}
+    std::unique_ptr<ProgressCallback> CreateHostProgressCallback() { return nullptr; }
+    void OnAchievementsLoginSuccess(const char*, u32, u32, u32) {}
+    void OnPerformanceMetricsUpdated() {}
+    void OnAchievementsLoginRequested(int) {}
+    void OnAchievementsHardcoreModeChanged(bool) {}
+    std::string Internal::GetTranslatedStringImpl(std::string_view, std::string_view, char*, size_t) { return {}; }
+    void OnVMPaused() {}
+    void OnVMResumed() {}
+    void OnVMStarted() {}
+    void LoadSettings(SettingsInterface&) {}
 }
 
 // ── InputRecording stubs ──────────────────────────────────────
@@ -236,6 +267,30 @@ std::vector<AudioStream::DeviceInfo> AudioStream::GetCubebOutputDevices(const ch
 // ── Misc ──────────────────────────────────────────────────────
 std::vector<std::string> GetMetalAdapterList() { return {}; }
 
+// ── Threading stubs ───────────────────────────────────────────
+namespace Threading {
+    void Sleep(int) {}
+    void SpinWait() {}
+    void SetNameOfCurrentThread(const char*) {}
+    uint64_t GetThreadTicksPerSecond() { return 1000000000ULL; }
+    class KernelSemaphore {
+    public:
+        KernelSemaphore() { Create(); }
+        ~KernelSemaphore() { Destroy(); }
+        void Create() {}
+        void Destroy() {}
+        void Post() {}
+        void Wait() {}
+        bool TryWait() { return true; }
+    };
+    class ThreadHandle {
+    public:
+        void Resume() {}
+        void Detach() {}
+        bool WaitForExit(unsigned int) { return true; }
+    };
+}
+
 // ── SaveState OSD report stubs ────────────────────────────────
 void SaveState_ReportLoadErrorOSD(const std::string&, std::optional<int>, bool) {}
 void SaveState_ReportSaveErrorOSD(const std::string&, std::optional<int>) {}
@@ -294,14 +349,6 @@ namespace isa_native {
 #include <array>
 #include "FreeSurroundDecoder.h"
 const std::array<FreeSurroundDecoder::ChannelMap, static_cast<size_t>(FreeSurroundDecoder::ChannelSetup::MaxCount)> FreeSurroundDecoder::s_channel_maps = {};
-
-// ── Host additional callbacks ────────────────────────────
-namespace Host {
-    void OnVMPaused() {}
-    void OnVMResumed() {}
-    void OnVMStarted() {}
-    void LoadSettings(SettingsInterface&) {}
-}
 
 // ── InputRecordingControls stub ──────────────────────────
 namespace InputRecordingControls {
