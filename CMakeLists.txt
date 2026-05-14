@@ -82,7 +82,6 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSLocalMemory.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSLocalMemoryMultiISA.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSPerfMon.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSPng.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSRingHeap.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSState.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSTables.cpp
