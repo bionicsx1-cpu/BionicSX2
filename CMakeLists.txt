@@ -175,7 +175,8 @@ add_library(bionicsx2_core STATIC
     # EXCLUDED: All USB sub-files — require platform USB backend APIs (not on iOS)
 
     # Core management
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SaveState.cpp
+    # EXCLUDED: pcsx2/pcsx2/SaveState.cpp — depends on libpng (screenshot feature)
+    # TODO: Enable after libpng is integrated or wrap png code with __IOS__ guard
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VMManager.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host.cpp
 
