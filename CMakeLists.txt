@@ -221,7 +221,7 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/FastJmp.cpp
     # EXCLUDED: common/Darwin/DarwinMisc.cpp — macOS-only APIs (CoreGraphics, IOKit)
     ${CMAKE_SOURCE_DIR}/pcsx2/common/HTTPDownloader.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/common/HTTPDownloaderCurl.cpp
+    # EXCLUDED: common/HTTPDownloaderCurl.cpp — uses curl_multi* API (not stubbed for iOS)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/LayeredSettingsInterface.cpp
 
     # 3rdparty library sources
