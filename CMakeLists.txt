@@ -140,11 +140,10 @@ add_library(bionicsx2_core STATIC
     # require libpng/libjpeg/libwebp. Non-critical for core emulation.
 
     # GS Renderer SW (Audit Sec 2.4 — GREEN)
+    # EXCLUDED on iOS: GSDrawScanlineCodeGenerator, GSSetupPrimCodeGenerator, GSRasterizer
+    # These use vixl JIT — not needed for Metal HW renderer on iOS
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanline.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.arm64.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSRasterizer.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSRendererSW.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.arm64.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSTextureCacheSW.cpp
 
     # GS Renderer Null (Audit Sec 2.4 — GREEN)
@@ -152,6 +151,15 @@ add_library(bionicsx2_core STATIC
 
     # SPU2 (Audit Sec 2.5 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/spu2.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/spu2sys.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/spu2freeze.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/ADSR.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/Dma.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/Mixer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/Reverb.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/ReverbResample.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/RegTable.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/ReadInput.cpp
 
     # SIO / PAD / Memcard (Audit Sec 2.7 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Sio.cpp
@@ -186,6 +194,10 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/PerformanceMetrics.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/StateWrapper.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputManager.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputSource.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/BuildVersion.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Pad/PadNotConnected.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host/AudioStream.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputSource.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/BuildVersion.cpp
@@ -198,6 +210,8 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/Error.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/FileSystem.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/HostSys.cpp
+    # LnxHostSys.cpp provides SharedMemoryMappingArea (needed for vtlb)
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Linux/LnxHostSys.cpp
     # EXCLUDED: common/Image.cpp — requires libjpeg/libpng/libwebp
     # Non-critical for core emulation. Stub provides linker-safe no-ops.
     src/stubs/ImageStub.cpp
@@ -268,6 +282,7 @@ add_library(bionicsx2_core STATIC
 
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)
+    ios/platform/PCSX2Stubs.mm
     ios/platform/iOSVMManager.mm
     ios/platform/HostSys_iOS.mm
     ios/platform/CocoaTools.mm
@@ -323,6 +338,7 @@ target_compile_options(bionicsx2_core PRIVATE
 target_compile_definitions(bionicsx2_core PRIVATE
     DISABLE_PCSX2_RECOMPILER=1
     PCSX2_DISABLE_GSCAPTURE=1
+    PCSX2_TARGET_IOS=1
     PCSX2_CORE=1
     __POSIX__=1
     __IOS__=1
