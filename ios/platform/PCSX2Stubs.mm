@@ -113,7 +113,7 @@ void TermNet() {}
 void ReconfigureLiveNet(const void*) {}
 
 // ── GSDumpBase stubs ───────────────────────────────────────
-#include "GS/GS.h"
+#include "GS/GSDump.h"
 std::unique_ptr<GSDumpBase> GSDumpBase::CreateUncompressedDump(
     const std::string&, const std::string&, u32, u32, u32, const u32*, const freezeData&, const GSPrivRegSet*) { return nullptr; }
 std::unique_ptr<GSDumpBase> GSDumpBase::CreateXzDump(
@@ -127,16 +127,23 @@ void GSDumpBase::Transfer(int, const u8*, size_t) {}
 // ── SaveState stubs ──────────────────────────────────────────
 #include "SaveState.h"
 std::unique_ptr<SaveStateScreenshotData> SaveState_SaveScreenshot() { return nullptr; }
-bool SaveState_DownloadState(Error*) { return false; }
+std::unique_ptr<ArchiveEntryList> SaveState_DownloadState(Error*) { return nullptr; }
 bool SaveState_UnzipFromDisk(const std::string&, Error*) { return false; }
-void SaveState_ZipToDisk(std::unique_ptr<ArchiveEntryList>, std::unique_ptr<SaveStateScreenshotData>, const char*, Error*) {}
-void SaveState_ReportLoadErrorOSD(const std::string&, std::optional<int>, bool) {}
-void SaveState_ReportSaveErrorOSD(const std::string&, std::optional<int>) {}
+bool SaveState_ZipToDisk(std::unique_ptr<ArchiveEntryList>, std::unique_ptr<SaveStateScreenshotData>, const char*, Error*) { return false; }
 
-// ── DarwinMisc stubs ────────────────────────────────────────
-namespace DarwinMisc {
-    std::vector<int> GetCPUClasses() { return {}; }
+// ── Host callbacks (only functions NOT in Host.cpp/iOSVMManager) ──
+namespace Host {
+    void AddKeyedOSDMessage(std::string key, std::string msg, float duration) {}
+    void RemoveKeyedOSDMessage(std::string key) {}
+    void AddIconOSDMessage(std::string key, const char* icon, std::string_view msg, float duration) {}
+    void OnGameChanged(const std::string&, const std::string&, const std::string&, const std::string&, u32, u32) {}
+    void CancelGameListRefresh() {}
 }
+
+// ── DarwinMisc stubs (DarwinMisc.cpp excluded — uses CoreGraphics) ──
+#include <string>
+struct CPUClass { std::string name; u32 physical, logical; };
+std::vector<CPUClass> GetCPUClasses() { return {}; }
 
 // ── SysMemory_Reset wrapper ────────────────────────────────────
 #include "Memory.h"
@@ -151,39 +158,3 @@ namespace CocoaTools {
 
 // ── Misc ──────────────────────────────────────────────────────
 std::vector<std::string> GetMetalAdapterList() { return {}; }
-
-// ── Expression parser stubs ──────────────────────────────────
-bool parseExpression(const char*, void*, u64&, std::string&) { return false; }
-bool initPostfixExpression(const char*, void*, std::vector<std::pair<u64,u64>>&, std::string&) { return false; }
-bool parsePostfixExpression(std::vector<std::pair<u64,u64>>&, void*, u64&, std::string&) { return false; }
-
-// ── ShiftJIS ────────────────────────────────────────────────
-std::string ShiftJIS_ConvertString(const char* s) { return s ? s : ""; }
-std::string ShiftJIS_ConvertString(const char* s, int) { return s ? s : ""; }
-
-// ── Host callbacks ────────────────────────────────────────────
-namespace Host {
-    void OnVMStarted() {}
-    void OnVMDestroyed() {}
-    void SetMouseMode(bool relative, bool hide) {}
-    void AddKeyedOSDMessage(std::string key, std::string msg, float duration) {}
-    void RemoveKeyedOSDMessage(std::string key) {}
-    void AddIconOSDMessage(std::string key, const char* icon, std::string_view msg, float duration) {}
-    void OnGameChanged(const std::string&, const std::string&, const std::string&, const std::string&, u32, u32) {}
-    void RequestResizeHostDisplay(s32 w, s32 h) {}
-    void OnPerformanceMetricsUpdated() {}
-    void CheckForSettingsChanges(const void* old) {}
-    void CommitBaseSettingChanges() {}
-    bool BeginPresentFrame() { return true; }
-    void CancelGameListRefresh() {}
-}
-
-// ── AudioStream backend stubs ─────────────────────────────────
-std::unique_ptr<AudioStream> AudioStream::CreateCubebAudioStream(
-    u32 sr, const AudioStreamParameters& p, const char* drv, const char* dev, bool ss, Error* e)
-{ return nullptr; }
-std::unique_ptr<AudioStream> AudioStream::CreateSDLAudioStream(
-    u32 sr, const AudioStreamParameters& p, bool ss, Error* e)
-{ return nullptr; }
-std::vector<std::pair<std::string, std::string>> AudioStream::GetCubebDriverNames() { return {}; }
-std::vector<AudioStream::DeviceInfo> AudioStream::GetCubebOutputDevices(const char* drv) { return {}; }
