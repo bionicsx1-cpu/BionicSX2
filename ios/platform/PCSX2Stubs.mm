@@ -187,13 +187,8 @@ namespace MIPSAnalyst {
 }
 
 // ── isa_native SW rasterizer stubs ─────────────────────────
-// (GSDrawScanline.cpp excluded — stub for MULTI_ISA dispatch)
+// (GSDrawScanline.cpp excluded — GSRasterizerData not used on iOS)
 
-// ── isa_native SW rasterizer stubs ─────────────────────────
-// (GSDrawScanline.cpp excluded — these would be from MULTI_ISA dispatch)
-namespace isa_native {
-    int GSRasterizerData::s_counter = 0;
-}
 // ── InputManager stubs ─────────────────────────────────────
 namespace InputManager {
     const char* ConvertHostKeyboardCodeToIcon(u32) { return nullptr; }
