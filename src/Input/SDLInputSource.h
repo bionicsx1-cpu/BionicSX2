@@ -1,19 +1,22 @@
 // iOS stub — shadows pcsx2/pcsx2/Input/SDLInputSource.h
-// SDL3 is not available on iOS. iOS uses GameController.framework.
+// SDL3 not available on iOS. iOS uses GameController.framework.
 #pragma once
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
 
 class SettingsInterface;
-struct WindowInfo;
+enum class InputSourceType : unsigned int;
 
 class SDLInputSource {
 public:
   SDLInputSource() {}
-  virtual ~SDLInputSource() {}
-  bool Initialize(const WindowInfo& wi) { return false; }
-  void Reload() {}
-  void PollEvents() {}
-  int GetInputID(const std::string& key) { return -1; }
+  ~SDLInputSource() {}
+  bool Initialize(SettingsInterface& si, std::unique_lock<std::mutex>& settings_lock) { return false; }
+  void UpdateSettings(SettingsInterface& si, std::unique_lock<std::mutex>& settings_lock) {}
+  bool ReloadDevices() { return false; }
+  void Shutdown() {}
+  bool IsInitialized() { return false; }
+  static void ResetRGBForAllPlayers(SettingsInterface& si) {}
 };
