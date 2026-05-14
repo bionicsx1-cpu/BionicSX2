@@ -142,7 +142,9 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/Timer.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/WAVWriter.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/WindowInfo.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/common/YAML.cpp
+    # EXCLUDED: common/YAML.cpp — requires rapidyaml (ryml), not in 3rdparty
+    # Non-critical for core emulation (game DB, memcard folder).
+
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)
     ios/platform/iOSVMManager.mm
