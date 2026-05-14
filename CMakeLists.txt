@@ -222,6 +222,7 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Pcsx2Config.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/src/format.cc
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/src/os.cc
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/freesurround/src/FreeSurroundDecoder.cpp
 
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)
@@ -321,6 +322,7 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/cubeb/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libchdr/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/freesurround/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/cpuinfo/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/simpleini/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/rcheevos/include
