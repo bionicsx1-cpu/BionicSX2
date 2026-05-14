@@ -140,9 +140,8 @@ add_library(bionicsx2_core STATIC
     # require libpng/libjpeg/libwebp. Non-critical for core emulation.
 
     # GS Renderer SW (Audit Sec 2.4 — GREEN)
-    # EXCLUDED on iOS: GSDrawScanlineCodeGenerator, GSSetupPrimCodeGenerator, GSRasterizer
-    # These use vixl JIT — not needed for Metal HW renderer on iOS
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanline.cpp
+    # EXCLUDED on iOS: SW rasterizer JIT files (GSDrawScanline*, GSSetupPrim*, GSRasterizer)
+    # These use vixl JIT + MULTI_ISA dispatch for SW rendering — not needed for Metal HW
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSRendererSW.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSTextureCacheSW.cpp
 
