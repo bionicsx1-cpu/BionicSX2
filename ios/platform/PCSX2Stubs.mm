@@ -235,3 +235,84 @@ std::vector<AudioStream::DeviceInfo> AudioStream::GetCubebOutputDevices(const ch
 
 // ── Misc ──────────────────────────────────────────────────────
 std::vector<std::string> GetMetalAdapterList() { return {}; }
+
+// ── SaveState OSD report stubs ────────────────────────────────
+void SaveState_ReportLoadErrorOSD(const std::string&, std::optional<int>, bool) {}
+void SaveState_ReportSaveErrorOSD(const std::string&, std::optional<int>) {}
+
+// ── PageFaultHandler stubs ──────────────────────────────────
+namespace PageFaultHandler {
+    bool Install() { return false; }
+    bool InstallSecondaryThread() { return false; }
+}
+
+// ── FolderMemoryCardAggregator stubs ────────────────────────
+class FolderMemoryCardAggregator {
+public:
+    bool Open() { return false; }
+    void Close() {}
+    bool Read(u32, u8*, u32, u32) { return false; }
+    bool Save() { return false; }
+    bool EraseBlock(u32) { return false; }
+    u32 GetSizeInfo() { return 0; }
+    void SetFiltering(bool) {}
+    bool IsPSX() { return false; }
+    u32 GetCRC() { return 0; }
+    void NextFrame() {}
+    void ReIndex() {}
+    bool IsPresent() { return false; }
+};
+class FolderMemoryCard {
+public:
+    bool Open() { return false; }
+    void Close() {}
+    FolderMemoryCard() = default;
+};
+
+// ── ATA stubs ────────────────────────────────────────────
+namespace ATA {
+    void ATA_HardReset() {}
+    bool Open() { return false; }
+    void Close() {}
+    bool Read(u32, u8*, u32) { return false; }
+    bool Write(u32, const u8*, u32) { return false; }
+    void Async() {}
+    void ReadDMAToFIFO(u32) {}
+    void WriteDMAFromFIFO(u32) {}
+}
+
+// ── GSSingleRasterizer stubs ─────────────────────────────
+namespace isa_native {
+    class GSSingleRasterizer {
+    public:
+        GSSingleRasterizer() = default;
+        void Draw(void*) {}
+    };
+}
+
+// ── FreeSurroundDecoder static member ────────────────────
+#include "FreeSurroundDecoder.h"
+void* FreeSurroundDecoder::s_channel_maps = nullptr;
+
+// ── Host additional callbacks ────────────────────────────
+namespace Host {
+    void OnVMPaused() {}
+    void OnVMResumed() {}
+    void OnVMStarted() {}
+    void LoadSettings(SettingsInterface&) {}
+}
+
+// ── InputRecordingControls stub ──────────────────────────
+namespace InputRecordingControls {
+    void processControlQueue() {}
+}
+
+// ── GS TextureReplacements stubs ─────────────────────────
+#include "GS/GS.h"
+namespace GSTextureReplacements {
+    void DumpTexture(void*, void*, void*, void*, void*, int) {}
+    void UpdateConfig() {}
+    void* LookupReplacementTexture(void*, bool, bool) { return nullptr; }
+    bool HasAnyReplacementTextures() { return false; }
+    bool HasReplacementTextureWithOtherPalette(void*) { return false; }
+}

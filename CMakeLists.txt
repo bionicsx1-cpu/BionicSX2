@@ -206,9 +206,6 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/BiosDebugData.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ShiftJisToUnicode.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host/AudioStream.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputSource.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/BuildVersion.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Pad/PadNotConnected.cpp
 
     # Common Library (cross-platform subset)
     ${CMAKE_SOURCE_DIR}/pcsx2/common/AlignedMalloc.cpp
@@ -338,6 +335,10 @@ target_link_libraries(bionicsx2_core PUBLIC
     "-framework SystemConfiguration"
     "-lz"
 )
+
+# rcheevos — achievement system (needed by Achievements.cpp)
+add_subdirectory(pcsx2/3rdparty/rcheevos EXCLUDE_FROM_ALL)
+target_link_libraries(bionicsx2_core PUBLIC rcheevos)
 
 # AUDIT REFERENCE: Section 10.2 — Compile options
 target_compile_options(bionicsx2_core PRIVATE
