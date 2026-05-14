@@ -154,10 +154,10 @@ bool SaveState_ZipToDisk(std::unique_ptr<ArchiveEntryList>, std::unique_ptr<Save
 
 // ── SaveStateBase stubs ─────────────────────────────────────
 bool SaveStateBase::FreezeTag(const char*) { return false; }
-bool SaveStateBase::PrepBlock(int) { return false; }
+void SaveStateBase::PrepBlock(int) {}
 
 // ── HTTPDownloader stub ─────────────────────────────────────
-#include "HTTPDownloader.h"
+#include "common/HTTPDownloader.h"
 std::unique_ptr<HTTPDownloader> HTTPDownloader::Create(std::string) { return nullptr; }
 
 // ── Host callbacks ────────────────────────────────────────────
