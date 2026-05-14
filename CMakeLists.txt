@@ -217,6 +217,8 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/Semaphore.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/FastJmp.cpp
     # EXCLUDED: common/Darwin/DarwinMisc.cpp — macOS-only APIs (CoreGraphics, IOKit)
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/HTTPDownloader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/LayeredSettingsInterface.cpp
 
     # 3rdparty library sources
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Pcsx2Config.cpp
@@ -234,6 +236,31 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/SoundTouch.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/TDStretch.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/BPMDetect.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/ast.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/elf.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/elf_symtab.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/importer_flags.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/mdebug_analysis.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/mdebug_importer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/mdebug_section.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/mdebug_symbols.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/sndll.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/stabs.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/stabs_to_ast.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/symbol_database.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/symbol_file.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/symbol_table.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/util.cpp
+
+    # iOS stubs (non-critical features)
+    src/stubs/Globals.cpp
+    src/stubs/ImGuiManager.cpp
+    src/stubs/ImGuiFullscreen.cpp
+    src/stubs/FullscreenUI.cpp
+    src/stubs/GSDumpReplayer.cpp
+    src/stubs/InputRecording.cpp
+    src/stubs/GSTextureReplacements.cpp
+    src/stubs/SaveStateSelectorUI.cpp
 
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)
