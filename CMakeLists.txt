@@ -255,6 +255,8 @@ set_target_properties(bionicsx2_ui PROPERTIES
 # AUDIT REFERENCE: Section 10.2 — Main executable
 add_executable(BionicSX2
     ios/Info.plist
+    ios/main.mm
+    ios/ui/AppDelegate.mm
 )
 target_link_libraries(BionicSX2 PRIVATE bionicsx2_ui bionicsx2_core)
 set_target_properties(BionicSX2 PROPERTIES
