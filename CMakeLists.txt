@@ -245,35 +245,6 @@ target_link_libraries(bionicsx2_core PUBLIC
     "-lz"
 )
 
-# Libzip source files (needed by SaveState.cpp and ZipHelpers.h)
-file(GLOB LIBZIP_SOURCES
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_*.c
-)
-# Exclude algorithm and platform-specific sources
-list(REMOVE_ITEM LIBZIP_SOURCES
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_algorithm_bzip2.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_algorithm_deflate.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_algorithm_xz.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_algorithm_zstd.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_crypto_gnutls.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_crypto_mbedtls.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_crypto_openssl.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_crypto_win.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_random_uwp.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_random_win32.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_file_win32.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_file_win32_ansi.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_file_win32_named.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_file_win32_utf16.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_file_win32_utf8.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_pkware_decode.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_pkware_encode.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_winzip_aes_decode.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_source_winzip_aes_encode.c
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib/zip_winzip_aes.c
-)
-target_sources(bionicsx2_core PRIVATE ${LIBZIP_SOURCES})
-
 # AUDIT REFERENCE: Section 10.2 — Compile options
 target_compile_options(bionicsx2_core PRIVATE
     -fobjc-arc
@@ -327,10 +298,8 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libchdr/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/cpuinfo/include
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libzip/lib
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/simpleini/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/rcheevos/include
-    ${CMAKE_SOURCE_DIR}/src/stubs/libzip
     ${CMAKE_SOURCE_DIR}/src/stubs
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/demangler/include
 )
