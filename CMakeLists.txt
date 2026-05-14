@@ -85,7 +85,7 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/InputIsoFile.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/OutputIsoFile.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/ThreadedFileReader.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CsoFileReader.cpp
+    # EXCLUDED: CDVD/CsoFileReader.cpp — requires lz4 (not available on iOS)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/FlatFileReader.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/IsoReader.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/BlockdumpFileReader.cpp
