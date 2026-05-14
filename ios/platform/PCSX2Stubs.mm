@@ -18,9 +18,8 @@
 #include "GS/GSDump.h"
 #include "SaveState.h"
 #include "Memory.h"
-#include "Vif_Dynarec.h"
-#include "GS/GSDump.h"
-#include "SaveState.h"
+#include "Config.h"
+#include "GSDumpReplayer.h"
 
 // ── dVifUnpack template specializations (no-op stubs for iOS) ──
 template<> void dVifUnpack<0>(const u8*, bool) {}
@@ -55,10 +54,22 @@ void GSCaptureSyncPoint(int) {}
 // ── ImGui globals ────────────────────────────────────────────
 ImGuiContext* GImGui = nullptr;
 
-// ── GSDumpReplayer ────────────────────────────────────────────
-#include "GSDumpReplayer.h"
+// ── GSDumpReplayer stubs ────────────────────────────────────
 R5900cpu GSDumpReplayerCpu;
+bool GSDumpReplayer::Initialize(const char*, Error*) { return false; }
+bool GSDumpReplayer::ChangeDump(const char*) { return false; }
+std::string GSDumpReplayer::GetDumpSerial() { return {}; }
+u32 GSDumpReplayer::GetDumpCRC() { return 0; }
 void GSDumpReplayer::RenderUI() {}
+
+// ── isa_native GS SW rasterizer stubs (MULTI_ISA dispatch) ──
+class GSRasterizerData { public: static int s_counter; };
+class GSRasterizerList { public: static GSRasterizerList* Create(int) { return nullptr; } };
+int GSRasterizerData::s_counter = 0;
+namespace isa_native {
+    using ::GSRasterizerData;
+    using ::GSRasterizerList;
+}
 
 // ── PGIF stubs ──────────────────────────────────────────────
 void PGIFrQword(u32, void*) {}
@@ -120,7 +131,6 @@ void WriteFIFO_GIF(const u128*) {}
 void ReadFifoSingleWord() {}
 
 // ── NET stubs ──────────────────────────────────────────────
-#include "Config.h"
 void InitNet() {}
 void TermNet() {}
 void ReconfigureLiveNet(const Pcsx2Config&) {}
@@ -141,8 +151,14 @@ std::unique_ptr<SaveStateScreenshotData> SaveState_SaveScreenshot() { return nul
 std::unique_ptr<ArchiveEntryList> SaveState_DownloadState(Error*) { return nullptr; }
 bool SaveState_UnzipFromDisk(const std::string&, Error*) { return false; }
 bool SaveState_ZipToDisk(std::unique_ptr<ArchiveEntryList>, std::unique_ptr<SaveStateScreenshotData>, const char*, Error*) { return false; }
-void SaveState_ReportLoadErrorOSD(const std::string&, std::optional<int>, bool) {}
-void SaveState_ReportSaveErrorOSD(const std::string&, std::optional<int>) {}
+
+// ── SaveStateBase stubs ─────────────────────────────────────
+bool SaveStateBase::FreezeTag(const char*) { return false; }
+bool SaveStateBase::PrepBlock(int) { return false; }
+
+// ── HTTPDownloader stub ─────────────────────────────────────
+#include "HTTPDownloader.h"
+std::unique_ptr<HTTPDownloader> HTTPDownloader::Create(std::string) { return nullptr; }
 
 // ── Host callbacks ────────────────────────────────────────────
 namespace Host {
@@ -153,54 +169,51 @@ namespace Host {
     void CancelGameListRefresh() {}
 }
 
-// ── DarwinMisc stubs ────────────────────────────────────────
-struct CPUClass { std::string name; u32 physical, logical; };
-namespace DarwinMisc {
-    std::vector<CPUClass> GetCPUClasses() { return {}; }
-}
+// ── InputRecording stubs ──────────────────────────────────────
+class InputRecording {
+    static InputRecording s_instance;
+public:
+    static InputRecording& getControls() { return s_instance; }
+    void handleReset() {}
+    void incFrameCounter() {}
+    void processRecordQueue() {}
+    void handleLoadingSavestate() {}
+    void handleControllerDataUpdate() {}
+    void handleExceededFrameCounter() {}
+    void stop() {}
+};
+InputRecording InputRecording::s_instance;
 
-// ── GameDatabase stubs ──────────────────────────────────────
-namespace GameDatabase {
-    const void* findGame(std::string_view) { return nullptr; }
-}
+// ── CsoFileReader stub ────────────────────────────────────
+class CsoFileReader { public: CsoFileReader() {} };
 
-// ── FullscreenUI stubs ─────────────────────────────────────
-namespace FullscreenUI {
-    void GameChanged(std::string, std::string, std::string, u32, u32) {}
-    void OnVMStarted() {}
-    void OnVMDestroyed() {}
-    void ReturnToMainWindow() {}
-    void CheckForConfigChanges(const Pcsx2Config&) {}
-    std::string TimeToPrintableString(time_t) { return {}; }
-    void ReturnToPreviousWindow() {}
-    bool IsAchievementsWindowOpen() { return false; }
-    bool IsLeaderboardsWindowOpen() { return false; }
-    void SetStandardSelectionFooterText(bool) {}
-}
+// ── ImGuiFreeType stub ────────────────────────────────────
+namespace ImGuiFreeType { void* GetFontLoader() { return nullptr; } }
 
-// ── ImGuiManager stubs (provided by src/stubs/ImGuiManager.cpp) ──
+// ── MipsStackWalk stub ────────────────────────────────────
+class DebugInterface;
+namespace MipsStackWalk { bool Walk(DebugInterface*, u32, u32, u32, u32) { return false; } }
 
-// ── MIPSAnalyst stubs ──────────────────────────────────────
-namespace ccc { class SymbolDatabase; }
-namespace MIPSAnalyst {
-    void ScanForFunctions(ccc::SymbolDatabase&, class MemoryInterface&, u32, u32, bool) {}
-}
-
-// ── isa_native SW rasterizer stubs ─────────────────────────
-// (GSDrawScanline.cpp excluded — GSRasterizerData not used on iOS)
-
-// ── InputManager stubs ─────────────────────────────────────
+// ── InputManager keyboard stubs ────────────────────────────
 namespace InputManager {
+    std::optional<u32> ConvertHostKeyboardStringToCode(std::string_view) { return std::nullopt; }
+    std::string ConvertHostKeyboardCodeToString(u32) { return {}; }
     const char* ConvertHostKeyboardCodeToIcon(u32) { return nullptr; }
 }
 
-// ── AudioStream backend stubs ─────────────────────────────────
-std::unique_ptr<AudioStream> AudioStream::CreateCubebAudioStream(
-    u32, const AudioStreamParameters&, const char*, const char*, bool, Error*) { return nullptr; }
-std::unique_ptr<AudioStream> AudioStream::CreateSDLAudioStream(
-    u32, const AudioStreamParameters&, bool, Error*) { return nullptr; }
-std::vector<std::pair<std::string, std::string>> AudioStream::GetCubebDriverNames() { return {}; }
-std::vector<AudioStream::DeviceInfo> AudioStream::GetCubebOutputDevices(const char*) { return {}; }
+// ── RegisterDevice stub ───────────────────────────────────
+namespace RegisterDevice { void registerDevice() {} }
+
+// ── DarwinMisc stubs ────────────────────────────────────────
+struct CPUClass { std::string name; u32 physical, logical; };
+namespace DarwinMisc { std::vector<CPUClass> GetCPUClasses() { return {}; } }
+
+// ── GameDatabase stubs ──────────────────────────────────────
+namespace GameDatabase { const void* findGame(std::string_view) { return nullptr; } }
+
+// ── MIPSAnalyst stubs ──────────────────────────────────────
+namespace ccc { class SymbolDatabase; }
+namespace MIPSAnalyst { void ScanForFunctions(ccc::SymbolDatabase&, class MemoryInterface&, u32, u32, bool) {} }
 
 // ── SysMemory_Reset wrapper ────────────────────────────────────
 void SysMemory_Reset() { SysMemory::Reset(); }
@@ -211,6 +224,14 @@ namespace CocoaTools {
         return std::string([[[NSBundle mainBundle] bundlePath] UTF8String]);
     }
 }
+
+// ── AudioStream backend stubs ─────────────────────────────────
+std::unique_ptr<AudioStream> AudioStream::CreateCubebAudioStream(
+    u32, const AudioStreamParameters&, const char*, const char*, bool, Error*) { return nullptr; }
+std::unique_ptr<AudioStream> AudioStream::CreateSDLAudioStream(
+    u32, const AudioStreamParameters&, bool, Error*) { return nullptr; }
+std::vector<std::pair<std::string, std::string>> AudioStream::GetCubebDriverNames() { return {}; }
+std::vector<AudioStream::DeviceInfo> AudioStream::GetCubebOutputDevices(const char*) { return {}; }
 
 // ── Misc ──────────────────────────────────────────────────────
 std::vector<std::string> GetMetalAdapterList() { return {}; }
