@@ -105,8 +105,8 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSRendererHW.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSRendererHWMultiISA.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSTextureCache.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSTextureReplacementLoaders.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/HW/GSTextureReplacements.cpp
+    # EXCLUDED: GSTextureReplacementLoaders/Replacements — HD texture packs
+    # require libpng/libjpeg/libwebp. Non-critical for core emulation.
 
     # GS Renderer SW (Audit Sec 2.4 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/SW/GSDrawScanline.cpp
