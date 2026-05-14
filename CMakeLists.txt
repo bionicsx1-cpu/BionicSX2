@@ -216,7 +216,7 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/DynamicLibrary.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/Semaphore.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/FastJmp.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/common/Darwin/DarwinMisc.cpp
+    # EXCLUDED: common/Darwin/DarwinMisc.cpp — macOS-only APIs (CoreGraphics, IOKit)
 
     # 3rdparty library sources
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Pcsx2Config.cpp
