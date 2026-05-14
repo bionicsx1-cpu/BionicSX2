@@ -116,6 +116,7 @@ namespace Host {
 }
 
 // ── AudioStream backend stubs ─────────────────────────────────
+#include <utility>
 #include "Host/AudioStream.h"
 std::unique_ptr<AudioStream> AudioStream::CreateCubebAudioStream(
     u32 sr, const AudioStreamParameters& p, const char* drv, const char* dev, bool ss, Error* e)
@@ -123,5 +124,5 @@ std::unique_ptr<AudioStream> AudioStream::CreateCubebAudioStream(
 std::unique_ptr<AudioStream> AudioStream::CreateSDLAudioStream(
     u32 sr, const AudioStreamParameters& p, bool ss, Error* e)
 { return nullptr; }
-std::vector<std::string> AudioStream::GetCubebDriverNames() { return {}; }
+std::vector<std::pair<std::string, std::string>> AudioStream::GetCubebDriverNames() { return {}; }
 std::vector<AudioStream::DeviceInfo> AudioStream::GetCubebOutputDevices(const char* drv) { return {}; }
