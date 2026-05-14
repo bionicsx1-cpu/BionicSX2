@@ -232,7 +232,7 @@ namespace MipsStackWalk { bool Walk(DebugInterface*, u32, u32, u32, u32) { retur
 // ── InputManager keyboard stubs ────────────────────────────
 namespace InputManager {
     std::optional<u32> ConvertHostKeyboardStringToCode(std::string_view) { return std::nullopt; }
-    std::string ConvertHostKeyboardCodeToString(u32) { return {}; }
+    std::optional<std::string> ConvertHostKeyboardCodeToString(u32) { return std::nullopt; }
     const char* ConvertHostKeyboardCodeToIcon(u32) { return nullptr; }
 }
 
@@ -301,7 +301,8 @@ void Patch::ReloadPatches(const std::string&, u32, bool, bool, bool, bool) {}
 void Patch::ApplyPatchSettingOverrides() {}
 void Patch::UnloadPatches() {}
 void Patch::ApplyBootPatches() {}
-void Patch::ApplyPatches(const std::string&, const std::string&, u32, bool) {}
+void Patch::ApplyPatches(const std::vector<const PatchCommand*>&, patch_place_type, EEMemoryInterface&, IOPMemoryInterface&) {}
+void Patch::ApplyPatches(const std::vector<const PatchCommand*>&, patch_place_type, MemoryInterface&, MemoryInterface&) {}
 void Patch::ApplyVsyncPatches() {}
 
 // ── SaveState OSD report stubs ────────────────────────────────
