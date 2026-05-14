@@ -198,6 +198,11 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/BuildVersion.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Pad/PadNotConnected.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ps2/BiosTools.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/SymbolGuardian.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/SymbolImporter.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/Breakpoints.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/DebugInterface.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host/AudioStream.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputSource.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/BuildVersion.cpp
