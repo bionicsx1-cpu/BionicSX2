@@ -291,6 +291,16 @@ namespace Threading {
     };
 }
 
+// ── Patch stubs ───────────────────────────────────────────────
+#include "Patch.h"
+void Patch::ApplyPatch(void*, bool) {}
+void Patch::ApplyPatches(const std::string&, const std::string&) {}
+void Patch::ReloadPatches(const std::string&, const std::string&, u32) {}
+void Patch::UnloadPatches() {}
+void Patch::ApplyBootPatches() {}
+void Patch::ApplyLoadedPatches() {}
+void Patch::UnloadPatchesByCrc(u32) {}
+
 // ── SaveState OSD report stubs ────────────────────────────────
 void SaveState_ReportLoadErrorOSD(const std::string&, std::optional<int>, bool) {}
 void SaveState_ReportSaveErrorOSD(const std::string&, std::optional<int>) {}

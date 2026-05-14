@@ -199,13 +199,7 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ps2/BiosTools.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/MTVU.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Patch.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/SymbolGuardian.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/SymbolImporter.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/Breakpoints.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/DebugInterface.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/ExpressionParser.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/BiosDebugData.cpp
+    # EXCLUDED: Patch.cpp — depends on libzip's zip.h (not compiled on iOS)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/DisR5900asm.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ShiftJisToUnicode.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host/AudioStream.cpp
