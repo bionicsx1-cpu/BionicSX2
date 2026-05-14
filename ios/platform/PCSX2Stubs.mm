@@ -21,7 +21,7 @@
 #include "Config.h"
 #include "GSDumpReplayer.h"
 #include "Patch.h"
-#include "InputManager.h"
+#include "Input/InputManager.h"
 
 // ── dVifUnpack template specializations (no-op stubs for iOS) ──
 template<> void dVifUnpack<0>(const u8*, bool) {}
