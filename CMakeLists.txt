@@ -81,10 +81,19 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CDVDdiscReader.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CDVDcommon.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/ChdFileReader.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/IsoFileFormats.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CDVDisoReader.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/InputIsoFile.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/OutputIsoFile.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/ThreadedFileReader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CsoFileReader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/FlatFileReader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/IsoReader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/BlockdumpFileReader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/GzippedFileReader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/IsoHasher.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CDVDdiscThread.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/Ps1CD.cpp
+    # EXCLUDED: CDVD/Darwin/, CDVD/Linux/, CDVD/Windows/ — platform-specific optical drive I/O
 
     # IPU (Audit Sec 2.4 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IPU/IPU.cpp
