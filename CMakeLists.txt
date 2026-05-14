@@ -240,8 +240,10 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/demangler/include
 )
 
-# AUDIT REFERENCE: Section 10.2 — Swift UI frontend target
-add_library(bionicsx2_ui SHARED
+# AUDIT REFERENCE: Section 10.2 — Swift UI frontend target (EXCLUDE_FROM_ALL)
+# Swift files require Xcode generator — not compiled with Ninja.
+# The ObjC main.mm + AppDelegate.mm in the executable target provides the entry point.
+add_library(bionicsx2_ui SHARED EXCLUDE_FROM_ALL
     ios/ui/BionicSX2App.swift
     ios/ui/ContentView.swift
     ios/ui/MetalViewController.swift
@@ -253,13 +255,14 @@ set_target_properties(bionicsx2_ui PROPERTIES
 )
 
 # AUDIT REFERENCE: Section 10.2 — Main executable
-add_executable(BionicSX2
-    ios/Info.plist
+add_executable(BionicSX2 MACOSX_BUNDLE
     ios/main.mm
     ios/ui/AppDelegate.mm
 )
-target_link_libraries(BionicSX2 PRIVATE bionicsx2_ui bionicsx2_core)
+target_link_libraries(BionicSX2 PRIVATE bionicsx2_core)
 set_target_properties(BionicSX2 PROPERTIES
+    MACOSX_BUNDLE TRUE
+    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/ios/Info.plist
     PRODUCT_BUNDLE_IDENTIFIER "com.bionicsx2.app"
     XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
     XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
