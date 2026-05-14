@@ -79,10 +79,8 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSClut.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSDrawingContext.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSDrawingEnvironment.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSDump.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSLocalMemory.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSLocalMemoryMultiISA.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSLzma.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSPerfMon.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSPng.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSRingHeap.cpp
@@ -177,6 +175,7 @@ target_link_libraries(bionicsx2_core PUBLIC
     "-framework CoreVideo"
     "-framework CFNetwork"
     "-framework SystemConfiguration"
+    "-lz"
 )
 
 # AUDIT REFERENCE: Section 10.2 — Compile options
@@ -224,8 +223,6 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/include
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/xxhash
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/zlib
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/vixl/include
