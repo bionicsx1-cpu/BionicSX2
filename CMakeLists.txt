@@ -75,7 +75,7 @@ add_library(bionicsx2_core STATIC
     # GS Core (Audit Sec 2.4 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GS.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSBlock.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSCapture.cpp
+    # EXCLUDED: GS/GSCapture.cpp — depends on ffmpeg (not available on iOS)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSClut.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSDrawingContext.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GSDrawingEnvironment.cpp
@@ -186,9 +186,10 @@ target_compile_options(bionicsx2_core PRIVATE
     -Wno-unknown-pragmas
 )
 
-# AUDIT REFERENCE: Fix 2 — Disable x86 recompiler includes at preprocessor level
+# AUDIT REFERENCE: Fix 2 — Disable x86 recompiler + ffmpeg includes at preprocessor level
 target_compile_definitions(bionicsx2_core PRIVATE
     DISABLE_PCSX2_RECOMPILER=1
+    PCSX2_DISABLE_GSCAPTURE=1
     PCSX2_CORE=1
     __POSIX__=1
 )
@@ -201,6 +202,7 @@ target_compile_definitions(bionicsx2_core PRIVATE
 #   GS/Renderers/DX12   — DirectX not used (N/A — Audit Sec 1.2)
 #   x86/ recompiler     — Not ARM64 (N/A — Audit Sec 1.2)
 #   CDVD/Darwin/        — Physical drive (RED — Audit Sec 2.6)
+#   GS/GSCapture        — ffmpeg dependency (N/A — Audit Sec 2.4)
 #   arm64/Vif_Dynarec   — nVif JIT disabled (N/A — Audit Sec 2.3-F, 13.7)
 
 # AUDIT REFERENCE: Section 10.2 — Metal shader compilation (Xcode/iOS only)
