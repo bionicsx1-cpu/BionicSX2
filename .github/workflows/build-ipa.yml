@@ -59,75 +59,70 @@ jobs:
         run: |
           cmake --build build --config Release -- -j$(sysctl -n hw.logicalcpu)
 
-      # AUDIT REFERENCE: Section 10.3 — Verify CMake output before packaging
-      - name: Full build diagnostic
+      # AUDIT REFERENCE: Section 10.3 — CRITICAL DIAGNOSTIC
+      - name: CRITICAL DIAGNOSTIC
         run: |
-          echo "=== ALL files in build/ ==="
+          echo "======= FULL BUILD DIRECTORY ======="
           find build -type f | sort
 
-          echo "=== Executables ==="
-          find build -type f -perm +111 | xargs ls -lh 2>/dev/null
+          echo "======= ALL EXECUTABLES ======="
+          find build -type f | xargs file 2>/dev/null | grep -i "mach-o\|arm64\|executable"
 
-          echo "=== Static libraries ==="
+          echo "======= STATIC LIBS ======="
           find build -name "*.a" | xargs ls -lh 2>/dev/null
 
-          echo "=== Object files total size ==="
-          find build -name "*.o" | xargs du -ch 2>/dev/null | tail -1
+          echo "======= .app BUNDLE ======="
+          find build -name "*.app" -type d | xargs ls -lh 2>/dev/null
 
-          echo "=== CMakeCache executable target ==="
-          grep -i "executable\|OUTPUT_NAME\|RUNTIME" \
-            build/CMakeCache.txt 2>/dev/null | head -20
+          echo "======= CMake executable target location ======="
+          cat build/CMakeFiles/BionicSX2.dir/build.make 2>/dev/null | grep -i "output\|target" | head -10
+
+          echo "======= bionicsx2_core.a size ======="
+          find build -name "libbionicsx2_core.a" | xargs ls -lh 2>/dev/null
+
+          echo "======= BionicSX2 executable size ======="
+          find build -name "BionicSX2" ! -name "*.cpp" ! -name "*.h" | xargs ls -lh 2>/dev/null
+
+          echo "======= TOTAL BUILD SIZE ======="
+          du -sh build/
 
       # AUDIT REFERENCE: Section 10.3 — Package IPA from CMake binary
-      # CMake builds the binary directly (not via xcodebuild).
-      # xcodebuild archive/export does not work with Ninja generator.
       - name: Package IPA
         run: |
-          BINARY=$(find build -type f -perm +111 \
-            -not -name "*.sh" \
-            -not -name "cmake" \
-            -not -name "ninja" \
-            | xargs file 2>/dev/null \
-            | grep "arm64\|Mach-O" \
-            | cut -d: -f1 | head -1)
+          # Check for .app bundle first (MACOSX_BUNDLE output)
+          APP_BUNDLE=$(find build -name "BionicSX2.app" -type d | head -1)
 
-          if [ -z "$BINARY" ]; then
-            echo "ERROR: No ARM64 binary found. Build output:"
-            find build -type f | sort
-            exit 1
+          if [ -n "$APP_BUNDLE" ]; then
+            echo "Found .app bundle: $APP_BUNDLE"
+            ls -lh "$APP_BUNDLE/"
+            # Use the whole bundle
+            mkdir -p Payload
+            cp -r "$APP_BUNDLE" Payload/BionicSX2.app
+          else
+            echo "No .app bundle — looking for raw binary"
+            BINARY=$(find build -type f | xargs file 2>/dev/null \
+              | grep -i "mach-o.*arm64\|arm64.*executable" \
+              | cut -d: -f1 | head -1)
+
+            if [ -z "$BINARY" ]; then
+              echo "ERROR: No ARM64 binary found"
+              find build -type f | sort
+              exit 1
+            fi
+
+            echo "Found binary: $BINARY"
+            ls -lh "$BINARY"
+            mkdir -p Payload/BionicSX2.app
+            cp "$BINARY" Payload/BionicSX2.app/BionicSX2
+            cp ios/Info.plist Payload/BionicSX2.app/Info.plist
           fi
 
-          echo "Found binary: $BINARY ($(ls -lh $BINARY | awk '{print $5}'))"
+          # Sign ad-hoc
+          codesign --force --deep --sign - Payload/BionicSX2.app || true
 
-          # Create .app bundle structure
-          mkdir -p Payload/BionicSX2.app
-
-          # Copy binary
-          cp "$BINARY" Payload/BionicSX2.app/BionicSX2
-
-          # Copy Info.plist
-          cp ios/Info.plist Payload/BionicSX2.app/Info.plist
-
-          # Copy entitlements metadata
-          mkdir -p Payload/BionicSX2.app/_CodeSignature
-          cp ios/entitlements/BionicSX2.entitlements \
-            Payload/BionicSX2.app/_CodeSignature/entitlements.plist \
-            2>/dev/null || true
-
-          # Copy Metal shaders if compiled
-          find build -name "*.metallib" | while read f; do
-            cp "$f" Payload/BionicSX2.app/ 2>/dev/null || true
-          done
-
-          # Sign with ad-hoc identity
-          codesign --force --deep --sign - \
-            Payload/BionicSX2.app/BionicSX2 || true
-
-          # Package as IPA
+          # Package
           mkdir -p output
           zip -r output/BionicSX2.ipa Payload/
-
-          # Report
           ls -lh output/BionicSX2.ipa
           unzip -l output/BionicSX2.ipa
 
