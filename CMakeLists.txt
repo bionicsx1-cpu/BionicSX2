@@ -179,6 +179,14 @@ add_library(bionicsx2_core STATIC
     # TODO: Enable after libpng is integrated or wrap png code with __IOS__ guard
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VMManager.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Achievements.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/INISettingsInterface.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GameDatabase.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/PINE.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/PerformanceMetrics.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/StateWrapper.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputManager.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host/AudioStream.cpp
 
     # Common Library (cross-platform subset)
     ${CMAKE_SOURCE_DIR}/pcsx2/common/AlignedMalloc.cpp
@@ -208,6 +216,12 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/DynamicLibrary.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/Semaphore.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/FastJmp.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Darwin/DarwinMisc.cpp
+
+    # 3rdparty library sources
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Pcsx2Config.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/src/format.cc
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/src/os.cc
 
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)
@@ -224,6 +238,15 @@ add_library(bionicsx2_core STATIC
     metal/MetalDeviceInfo.mm
     metal/MetalTexture.mm
     metal/FrameSync.mm
+)
+
+# Non-critical/UI files excluded from compilation on iOS
+set_source_files_properties(
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GSDumpReplayer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Recording/InputRecording.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Recording/InputRecordingControls.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Recording/PadData.cpp
+    PROPERTIES HEADER_FILE_ONLY TRUE
 )
 
 # All dependencies use iOS native frameworks or 3rdparty source builds.
