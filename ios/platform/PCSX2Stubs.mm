@@ -20,6 +20,8 @@
 #include "Memory.h"
 #include "Config.h"
 #include "GSDumpReplayer.h"
+#include "Patch.h"
+#include "InputManager.h"
 
 // ── dVifUnpack template specializations (no-op stubs for iOS) ──
 template<> void dVifUnpack<0>(const u8*, bool) {}
@@ -193,11 +195,13 @@ namespace Host {
     void OnPerformanceMetricsUpdated() {}
     void OnAchievementsLoginRequested(int) {}
     void OnAchievementsHardcoreModeChanged(bool) {}
-    std::string Internal::GetTranslatedStringImpl(std::string_view, std::string_view, char*, size_t) { return {}; }
     void OnVMPaused() {}
     void OnVMResumed() {}
     void OnVMStarted() {}
     void LoadSettings(SettingsInterface&) {}
+    namespace Internal {
+        std::string GetTranslatedStringImpl(std::string_view, std::string_view, char*, size_t) { return {}; }
+    }
 }
 
 // ── InputRecording stubs ──────────────────────────────────────
@@ -293,13 +297,12 @@ namespace Threading {
 
 // ── Patch stubs ───────────────────────────────────────────────
 #include "Patch.h"
-void Patch::ApplyPatch(void*, bool) {}
-void Patch::ApplyPatches(const std::string&, const std::string&) {}
-void Patch::ReloadPatches(const std::string&, const std::string&, u32) {}
+void Patch::ReloadPatches(const std::string&, u32, bool, bool, bool, bool) {}
+void Patch::ApplyPatchSettingOverrides() {}
 void Patch::UnloadPatches() {}
 void Patch::ApplyBootPatches() {}
-void Patch::ApplyLoadedPatches() {}
-void Patch::UnloadPatchesByCrc(u32) {}
+void Patch::ApplyPatches(const std::string&, const std::string&, u32, bool) {}
+void Patch::ApplyVsyncPatches() {}
 
 // ── SaveState OSD report stubs ────────────────────────────────
 void SaveState_ReportLoadErrorOSD(const std::string&, std::optional<int>, bool) {}
@@ -344,15 +347,6 @@ namespace ATA {
     void Async() {}
     void ReadDMAToFIFO(u32) {}
     void WriteDMAFromFIFO(u32) {}
-}
-
-// ── GSSingleRasterizer stubs ─────────────────────────────
-namespace isa_native {
-    class GSSingleRasterizer {
-    public:
-        GSSingleRasterizer() = default;
-        void Draw(void*) {}
-    };
 }
 
 // ── FreeSurroundDecoder static member ────────────────────
