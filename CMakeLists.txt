@@ -166,82 +166,13 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Memcard/MemoryCardProtocol.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Multitap/MultitapProtocol.cpp
 
-    # DEV9 (Audit Sec 2.4 — GREEN)
+    # DEV9 (Audit Sec 2.4 — platform backends excluded, requires net/route.h/pcap)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/DEV9.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/AdapterUtils.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/flash.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/net.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/pcap_io.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/smap.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/sockets.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/ATA_Info.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/ATA_State.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/ATA_Transfer.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/Commands/ATA_CmdDMA.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/Commands/ATA_CmdExecuteDeviceDiag.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/Commands/ATA_CmdNoData.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/Commands/ATA_CmdPIOData.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/Commands/ATA_CmdSMART.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/Commands/ATA_Command.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/Commands/ATA_SCE.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/ATA/HddCreate.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/InternalServers/DHCP_Logger.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/InternalServers/DHCP_Server.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/InternalServers/DNS_Logger.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/InternalServers/DNS_Server.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/ARP/ARP_Packet.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/ARP/ARP_PacketEditor.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/EthernetFrame.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/EthernetFrameEditor.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/ICMP/ICMP_Packet.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/IP_Options.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/IP_Packet.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/TCP/TCP_Options.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/TCP/TCP_Packet.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/UDP/DHCP/DHCP_Options.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/UDP/DHCP/DHCP_Packet.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/UDP/DNS/DNS_Classes.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/UDP/DNS/DNS_Packet.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/PacketReader/IP/UDP/UDP_Packet.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/Sessions/BaseSession.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/Sessions/ICMP_Session/ICMP_Session.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/Sessions/TCP_Session/TCP_Session.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/Sessions/TCP_Session/TCP_Session_In.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/Sessions/TCP_Session/TCP_Session_Out.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/Sessions/UDP_Session/UDP_Common.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/Sessions/UDP_Session/UDP_FixedPort.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/Sessions/UDP_Session/UDP_Session.cpp
-    # EXCLUDED: DEV9/Win32/ — Windows-specific pcap/tap backends
+    # EXCLUDED: All DEV9 sub-files — require macOS net/route.h and pcap (not on iOS)
 
-    # USB (Audit Sec 2.4 — PARTIAL)
+    # USB (Audit Sec 2.4 — platform backends excluded, depends on libusb/hidapi)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/USB.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/deviceproxy.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/qemu-usb/bus.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/qemu-usb/core.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/qemu-usb/desc.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/qemu-usb/input-keymap-qcode-to-qnum.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/qemu-usb/usb-ohci.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/shared/ringbuffer.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-eyetoy/jo_mpeg.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-eyetoy/usb-eyetoy-webcam.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-lightgun/guncon2.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-mic/audiodev-cubeb.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-mic/usb-headset.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-mic/usb-mic.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-msd/usb-msd.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/lg/lg_ff.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-buzz.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-gametrak.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-pad-ff.cpp
-    # EXCLUDED: usb-pad-sdl-ff.cpp — requires SDL3 (not available on iOS)
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-pad.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-realplay.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-seamic.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-train.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-trance-vibrator.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-turntable.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-printer/usb-printer.cpp
-    # EXCLUDED: USB/usb-eyetoy/cam-linux.cpp, cam-windows.cpp, cam-jpeg.cpp, hid — platform-specific
+    # EXCLUDED: All USB sub-files — require platform USB backend APIs (not on iOS)
 
     # Core management
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SaveState.cpp
