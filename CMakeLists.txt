@@ -232,7 +232,7 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-buzz.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-gametrak.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-pad-ff.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-pad-sdl-ff.cpp
+    # EXCLUDED: usb-pad-sdl-ff.cpp — requires SDL3 (not available on iOS)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-pad.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-realplay.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/usb-pad/usb-seamic.cpp
