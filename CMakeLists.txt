@@ -203,6 +203,9 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/SymbolImporter.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/Breakpoints.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/DebugInterface.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/ExpressionParser.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DebugTools/BiosDebugData.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ShiftJisToUnicode.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host/AudioStream.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputSource.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/BuildVersion.cpp
@@ -274,6 +277,11 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/symbol_file.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/symbol_table.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/ccc/src/ccc/util.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/src/imgui.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/src/imgui_draw.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/src/imgui_widgets.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/src/imgui_tables.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/imgui/src/imgui_stdlib.cpp
 
     # iOS stubs (non-critical features)
     src/stubs/Globals.cpp

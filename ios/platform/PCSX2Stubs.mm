@@ -7,12 +7,20 @@
 #include <functional>
 #include <algorithm>
 #include <cstring>
+#include <utility>
+#include <optional>
+#include <imgui.h>
+#include "R5900.h"
+#include "Host/AudioStream.h"
 
 // ── Forward declarations ──────────────────────────────────────
 class V_Core;
 struct StereoOut32 { int32_t L, R; };
 struct SpdifOut { uint32_t data[2]; };
 using ReverbBuffer = float[2][2][2];
+struct USBPort;
+struct OHCIState;
+struct USBDevice;
 
 // ── SPU2 globals ──────────────────────────────────────────────
 StereoOut32 Cores[2] = {};
@@ -31,58 +39,104 @@ void dVifReset(int idx) {}
 void dVifRelease(int idx) {}
 
 // ── vtlb stubs ────────────────────────────────────────────────
-void vtlb_DynBackpatchLoadStore(uptr code_address, u32 guest_pc,
-    u32 gpr_bitmask, u32 fpr_bitmask, u8 address_register,
-    u8 data_register, u8 size_in_bits, bool is_signed,
-    bool is_load, bool is_vector) {}
+void vtlb_DynBackpatchLoadStore(uptr, u32, u32, u32, u32, u32, u8, u8, u8, bool, bool, bool) {}
 
 // ── GS debug stubs ────────────────────────────────────────────
 u32 g_first_free_vertex = 0;
 void GSCaptureSyncPoint(int) {}
 
-// ── ImGui stubs ──────────────────────────────────────────────
-namespace ImGuiManager {
-    bool Initialize() { return true; }
-    void Shutdown(bool clear_state) {}
-    bool HasSoftwareCursor(u32 index) { return false; }
-    void ProcessHostKeyEvent(void* key, float value) {}
-    void UpdateMousePosition(float x, float y) {}
-    void InitializeFullscreenUI() {}
-}
-namespace ImGuiFullscreen {
-    void* g_large_font = nullptr;
-    void* g_medium_font = nullptr;
-    float g_layout_scale = 1.0f;
-    float g_rcp_layout_scale = 1.0f;
-    u32 UIPrimaryColor = 0;
-    u32 UISecondaryColor = 0;
-}
-namespace FullscreenUI {
-    bool IsInitialized() { return false; }
-    void ReturnToMainWindow() {}
-    bool IsAchievementsWindowOpen() { return false; }
-}
+// ── ImGui globals ────────────────────────────────────────────
+ImGuiContext* GImGui = nullptr;
 
-// ── GSDumpReplayer stubs ─────────────────────────────────────
-namespace GSDumpReplayer {
-    bool Initialize(const char*, void*) { return false; }
-    bool ChangeDump(const char*) { return false; }
-}
+// ── GSDumpReplayer ────────────────────────────────────────────
+R5900cpu GSDumpReplayerCpu = {};
+
+// ── PGIF stubs ──────────────────────────────────────────────
+void PGIFrQword(u32, void*) {}
+void PGIFwQword(u32, void*) {}
+u32 PGIFr(int) { return 0; }
+void PGIFw(int, u32) {}
+void pgifInit() {}
+
+// ── smap stubs ──────────────────────────────────────────────
+void smap_async(u32) {}
+u8  smap_read8(u32) { return 0; }
+u16 smap_read16(u32) { return 0; }
+u32 smap_read32(u32) { return 0; }
+void smap_write8(u32, u8) {}
+void smap_write16(u32, u16) {}
+void smap_write32(u32, u32) {}
+void smap_readDMA8Mem(u32*, int) {}
+void smap_writeDMA8Mem(u32*, int) {}
+
+// ── FLASH stubs ────────────────────────────────────────────
+u32 FLASHread32(u32, int) { return 0; }
+void FLASHwrite32(u32, u32, int) {}
+void FLASHinit() {}
+
+// ── USB/OHCI stubs ─────────────────────────────────────────
+void usb_attach(USBPort*) {}
+void usb_reattach(USBPort*) {}
+u32  ohci_create(u32, int) { return 0; }
+void ohci_hard_reset(OHCIState*) {}
+u32  ohci_mem_read(OHCIState*, u32) { return 0; }
+void ohci_mem_write(OHCIState*, u32, u32) {}
+void ohci_frame_boundary(void*) {}
+void usb_desc_set_config(USBDevice*, int, int) {}
+void usb_desc_set_interface(USBDevice*, int, int) {}
+
+// ── PS2 GPU DMA stubs ──────────────────────────────────────
+void psxDma2GpuR(u32) {}
+void psxDma2GpuW(u32, u32) {}
+u32 psxGPUr(int) { return 0; }
+void psxGPUw(int, u32) {}
+
+// ── SIF stubs ──────────────────────────────────────────────
+void sifReset() {}
+void SIF1Dma() {}
+void dmaSIF1() {}
+void dmaSIF2() {}
+void EEsif1Interrupt() {}
+void sif1Interrupt() {}
+void sif2Interrupt() {}
+
+// ── FIFO stubs ─────────────────────────────────────────────
+void ReadFIFO_VIF1(u128*) {}
+void WriteFIFO_VIF0(const u128*) {}
+void WriteFIFO_VIF1(const u128*) {}
+void WriteFIFO_GIF(const u128*) {}
+void ReadFifoSingleWord() {}
+
+// ── NET stubs ──────────────────────────────────────────────
+void InitNet() {}
+void TermNet() {}
+void ReconfigureLiveNet(const void*) {}
+
+// ── GSDumpBase stubs ───────────────────────────────────────
+#include "GS/GS.h"
+std::unique_ptr<GSDumpBase> GSDumpBase::CreateUncompressedDump(
+    const std::string&, const std::string&, u32, u32, u32, const u32*, const freezeData&, const GSPrivRegSet*) { return nullptr; }
+std::unique_ptr<GSDumpBase> GSDumpBase::CreateXzDump(
+    const std::string&, const std::string&, u32, u32, u32, const u32*, const freezeData&, const GSPrivRegSet*) { return nullptr; }
+std::unique_ptr<GSDumpBase> GSDumpBase::CreateZstDump(
+    const std::string&, const std::string&, u32, u32, u32, const u32*, const freezeData&, const GSPrivRegSet*) { return nullptr; }
+void GSDumpBase::VSync(int, bool, const GSPrivRegSet*) {}
+void GSDumpBase::ReadFIFO(u32) {}
+void GSDumpBase::Transfer(int, const u8*, size_t) {}
 
 // ── SaveState stubs ──────────────────────────────────────────
-void SaveState_ZipToDisk(void*, void*, const char*, void*) {}
+#include "SaveState.h"
+std::unique_ptr<SaveStateScreenshotData> SaveState_SaveScreenshot() { return nullptr; }
+bool SaveState_DownloadState(Error*) { return false; }
+bool SaveState_UnzipFromDisk(const std::string&, Error*) { return false; }
+void SaveState_ZipToDisk(std::unique_ptr<ArchiveEntryList>, std::unique_ptr<SaveStateScreenshotData>, const char*, Error*) {}
 void SaveState_ReportLoadErrorOSD(const std::string&, std::optional<int>, bool) {}
 void SaveState_ReportSaveErrorOSD(const std::string&, std::optional<int>) {}
 
-// ── CBreakPoints stubs ───────────────────────────────────────
-namespace CBreakPoints {
-    void AddBreakPoint(int, u32, bool, bool, bool) {}
-    bool IsAddressBreakPoint(int, u32) { return false; }
-    std::vector<u32> GetMemChecks(int) { return {}; }
-    u32 GetBreakpointCause(int) { return 0; }
+// ── DarwinMisc stubs ────────────────────────────────────────
+namespace DarwinMisc {
+    std::vector<int> GetCPUClasses() { return {}; }
 }
-
-// ── DarwinMisc stubs (CoreGraphics/IOKit not on iOS) ────────
 
 // ── SysMemory_Reset wrapper ────────────────────────────────────
 #include "Memory.h"
@@ -97,6 +151,15 @@ namespace CocoaTools {
 
 // ── Misc ──────────────────────────────────────────────────────
 std::vector<std::string> GetMetalAdapterList() { return {}; }
+
+// ── Expression parser stubs ──────────────────────────────────
+bool parseExpression(const char*, void*, u64&, std::string&) { return false; }
+bool initPostfixExpression(const char*, void*, std::vector<std::pair<u64,u64>>&, std::string&) { return false; }
+bool parsePostfixExpression(std::vector<std::pair<u64,u64>>&, void*, u64&, std::string&) { return false; }
+
+// ── ShiftJIS ────────────────────────────────────────────────
+std::string ShiftJIS_ConvertString(const char* s) { return s ? s : ""; }
+std::string ShiftJIS_ConvertString(const char* s, int) { return s ? s : ""; }
 
 // ── Host callbacks ────────────────────────────────────────────
 namespace Host {
@@ -116,8 +179,6 @@ namespace Host {
 }
 
 // ── AudioStream backend stubs ─────────────────────────────────
-#include <utility>
-#include "Host/AudioStream.h"
 std::unique_ptr<AudioStream> AudioStream::CreateCubebAudioStream(
     u32 sr, const AudioStreamParameters& p, const char* drv, const char* dev, bool ss, Error* e)
 { return nullptr; }
