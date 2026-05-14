@@ -223,6 +223,17 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/src/format.cc
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/fmt/src/os.cc
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/freesurround/src/FreeSurroundDecoder.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/AAFilter.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/FIFOSampleBuffer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/FIRFilter.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/InterpolateCubic.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/InterpolateLinear.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/InterpolateShannon.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/PeakFinder.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/RateTransposer.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/SoundTouch.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/TDStretch.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/source/SoundTouch/BPMDetect.cpp
 
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)
@@ -321,7 +332,7 @@ target_include_directories(bionicsx2_core PRIVATE
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/lzma/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/cubeb/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/libchdr/include
-    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch
+    ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/soundtouch/soundtouch
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/freesurround/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/cpuinfo/include
     ${CMAKE_SOURCE_DIR}/pcsx2/3rdparty/simpleini/include
