@@ -120,7 +120,7 @@ std::unique_ptr<GSDumpBase> GSDumpBase::CreateXzDump(
     const std::string&, const std::string&, u32, u32, u32, const u32*, const freezeData&, const GSPrivRegSet*) { return nullptr; }
 std::unique_ptr<GSDumpBase> GSDumpBase::CreateZstDump(
     const std::string&, const std::string&, u32, u32, u32, const u32*, const freezeData&, const GSPrivRegSet*) { return nullptr; }
-void GSDumpBase::VSync(int, bool, const GSPrivRegSet*) {}
+bool GSDumpBase::VSync(int, bool, const GSPrivRegSet*) { return false; }
 void GSDumpBase::ReadFIFO(u32) {}
 void GSDumpBase::Transfer(int, const u8*, size_t) {}
 
