@@ -6,7 +6,10 @@ namespace GSDumpReplayer {
   void RenderUI() {}
   void Shutdown() {}
 }
-namespace GSDumpBase {
-  void GSDumpBase() {}
-  void ~GSDumpBase() {}
-}
+class GSDumpBase {
+public:
+  GSDumpBase(std::string fn) : m_filename(std::move(fn)) {}
+  virtual ~GSDumpBase() {}
+private:
+  std::string m_filename;
+};
