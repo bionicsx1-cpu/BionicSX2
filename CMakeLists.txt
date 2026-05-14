@@ -45,6 +45,10 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif1_Dma.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Vif1_MFIFO.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/vtlb.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Cache.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/FW.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Mdec.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Sif0.cpp
 
     # VU Units (Audit Sec 2.2 — GREEN, interpreter paths only)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VU0.cpp
@@ -71,6 +75,22 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ps2/Iop/IopHwRead.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ps2/Iop/IopHwWrite.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/ps2/Iop/PsxBios.cpp
+
+    # CDVD (Audit Sec 2.6 — GREEN, ISO-only path)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CDVD.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CDVDdiscReader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/CDVDcommon.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/ChdFileReader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/IsoFileFormats.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/InputIsoFile.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/OutputIsoFile.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/CDVD/ThreadedFileReader.cpp
+
+    # IPU (Audit Sec 2.4 — GREEN)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IPU/IPU.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IPU/IPU_Fifo.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IPU/IPUdma.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/IPU/mpeg2_vlc.cpp
 
     # GS Core (Audit Sec 2.4 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/GS.cpp
@@ -119,6 +139,31 @@ add_library(bionicsx2_core STATIC
     # GS Renderer Null (Audit Sec 2.4 — GREEN)
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GS/Renderers/Null/GSRendererNull.cpp
 
+    # SPU2 (Audit Sec 2.5 — GREEN)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SPU2/spu2.cpp
+
+    # SIO / PAD / Memcard (Audit Sec 2.7 — GREEN)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Sio.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Sio0.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Sio2.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Pad/Pad.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Pad/PadDualshock2.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Mcd/MemoryCardFile.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Mcd/MemoryCardFolder.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Mcd/PS1MemoryCard.cpp
+
+    # DEV9 (Audit Sec 2.4 — GREEN)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/DEV9/DEV9.cpp
+
+    # USB (Audit Sec 2.4 — PARTIAL)
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/USB/USB.cpp
+
+    # Core management
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SaveState.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/VMManager.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/HostSettings.cpp
+
     # Common Library (cross-platform subset)
     ${CMAKE_SOURCE_DIR}/pcsx2/common/AlignedMalloc.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/Assertions.cpp
@@ -144,6 +189,9 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/WindowInfo.cpp
     # EXCLUDED: common/YAML.cpp — requires rapidyaml (ryml), not in 3rdparty
     # Non-critical for core emulation (game DB, memcard folder).
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/DynamicLibrary.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/Semaphore.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/FastJmp.cpp
 
 
     # iOS Platform (Audit Sec 12.2 — Phase 1-4)

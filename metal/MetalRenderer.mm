@@ -159,3 +159,10 @@ void MetalRenderer::Resize(uint32_t width, uint32_t height, float scale)
     NSLog(@"[BionicSX2] MetalRenderer resized: %dx%d @%.0f scale (Audit Sec 4.3)",
           m_width, m_height, m_scale);
 }
+
+// iOS stub — MakeGSDeviceMTL from original PCSX2 Metal backend
+// Uses AppKit/NSView which is not available on iOS.
+// Returns nullptr — GS.cpp will fall back to SW/null renderer.
+// Full Metal integration requires wrapping our MetalRenderer into GSDevice API.
+class GSDevice;
+GSDevice* MakeGSDeviceMTL() { return nullptr; }
