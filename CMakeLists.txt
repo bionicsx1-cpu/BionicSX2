@@ -246,6 +246,7 @@ set_source_files_properties(
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Recording/InputRecording.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Recording/InputRecordingControls.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Recording/PadData.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/GameDatabase.cpp
     PROPERTIES HEADER_FILE_ONLY TRUE
 )
 
