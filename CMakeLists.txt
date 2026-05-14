@@ -161,7 +161,8 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Pad/PadBase.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Pad/PadDualshock2.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Memcard/MemoryCardFile.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Memcard/MemoryCardFolder.cpp
+    # EXCLUDED: SIO/Memcard/MemoryCardFolder.cpp — requires rapidyaml (ryml), not in 3rdparty
+    # Core save/load still works via MemoryCardFile + MemoryCardProtocol
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Memcard/MemoryCardProtocol.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Multitap/MultitapProtocol.cpp
 
