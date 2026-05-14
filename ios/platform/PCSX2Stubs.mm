@@ -292,8 +292,8 @@ namespace isa_native {
 
 // ── FreeSurroundDecoder static member ────────────────────
 #include <array>
-#include "3rdparty/freesurround/include/FreeSurroundDecoder.h"
-const std::array<ChannelMap, static_cast<size_t>(ChannelSetup::MaxCount)> FreeSurroundDecoder::s_channel_maps = {};
+#include "FreeSurroundDecoder.h"
+const std::array<FreeSurroundDecoder::ChannelMap, static_cast<size_t>(FreeSurroundDecoder::ChannelSetup::MaxCount)> FreeSurroundDecoder::s_channel_maps = {};
 
 // ── Host additional callbacks ────────────────────────────
 namespace Host {
