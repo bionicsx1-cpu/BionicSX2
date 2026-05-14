@@ -1,7 +1,6 @@
 // BionicSX2 iOS — batch stubs for all uncategorized undefined symbols
-// Import-export foundation
 #import <Foundation/Foundation.h>
-#include <cstdint>
+#include "common/Pcsx2Defs.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -18,7 +17,7 @@ using ReverbBuffer = float[2][2][2];
 // ── SPU2 globals ──────────────────────────────────────────────
 StereoOut32 Cores[2] = {};
 SpdifOut Spdif = {};
-void TimeUpdate(u32 cClocks) {}
+void TimeUpdate(u32 clocks) {}
 void SPU2_FastWrite(u32 rmem, u16 value) {}
 namespace isa_native {
     void ReverbUpsample(V_Core& core) {}
@@ -27,9 +26,9 @@ namespace isa_native {
 }
 
 // ── VIF stubs ─────────────────────────────────────────────────
-extern void VifUnpackSSE_Init() {}
-extern void dVifReset(int idx) {}
-extern void dVifRelease(int idx) {}
+void VifUnpackSSE_Init() {}
+void dVifReset(int idx) {}
+void dVifRelease(int idx) {}
 
 // ── vtlb stubs ────────────────────────────────────────────────
 void vtlb_DynBackpatchLoadStore(uptr code_address, u32 guest_pc,
@@ -37,12 +36,11 @@ void vtlb_DynBackpatchLoadStore(uptr code_address, u32 guest_pc,
     u8 data_register, u8 size_in_bits, bool is_signed,
     bool is_load, bool is_vector) {}
 
-// ── GS debug/perf stubs ──────────────────────────────────────
-extern u32 g_first_free_vertex = 0;
-extern void GSCaptureSyncPoint(int) {}
+// ── GS debug stubs ────────────────────────────────────────────
+u32 g_first_free_vertex = 0;
+void GSCaptureSyncPoint(int) {}
 
 // ── ImGui stubs ──────────────────────────────────────────────
-#include "imgui.h"
 namespace ImGuiManager {
     bool Initialize() { return true; }
     void Shutdown(bool clear_state) {}
@@ -52,28 +50,23 @@ namespace ImGuiManager {
     void InitializeFullscreenUI() {}
 }
 namespace ImGuiFullscreen {
-    ImFont* g_large_font = nullptr;
-    ImFont* g_medium_font = nullptr;
+    void* g_large_font = nullptr;
+    void* g_medium_font = nullptr;
     float g_layout_scale = 1.0f;
     float g_rcp_layout_scale = 1.0f;
-    uint32_t UIPrimaryColor = 0;
-    uint32_t UISecondaryColor = 0;
+    u32 UIPrimaryColor = 0;
+    u32 UISecondaryColor = 0;
 }
 namespace FullscreenUI {
     bool IsInitialized() { return false; }
     void ReturnToMainWindow() {}
     bool IsAchievementsWindowOpen() { return false; }
 }
-namespace Host {
-    void OnVMStarted() {}
-    void OnVMDestroyed() {}
-    void SetMouseMode(bool relative, bool hide) {}
-}
 
 // ── GSDumpReplayer stubs ─────────────────────────────────────
 namespace GSDumpReplayer {
     bool Initialize(const char*, void*) { return false; }
-    void ChangeDump(const char*) {}
+    bool ChangeDump(const char*) { return false; }
 }
 
 // ── SaveState stubs ──────────────────────────────────────────
@@ -83,28 +76,13 @@ void SaveState_ReportSaveErrorOSD(const std::string&, std::optional<int>) {}
 
 // ── CBreakPoints stubs ───────────────────────────────────────
 namespace CBreakPoints {
-    void AddBreakPoint(int, uint32_t, bool, bool, bool) {}
-    bool IsAddressBreakPoint(int, uint32_t) { return false; }
-    std::vector<uint32_t> GetMemChecks(int) { return {}; }
-    uint32_t GetBreakpointCause(int) { return 0; }
+    void AddBreakPoint(int, u32, bool, bool, bool) {}
+    bool IsAddressBreakPoint(int, u32) { return false; }
+    std::vector<u32> GetMemChecks(int) { return {}; }
+    u32 GetBreakpointCause(int) { return 0; }
 }
-
-// ── InputRecording stubs ──────────────────────────────────────
-namespace InputRecording {
-    bool IsActive() { return false; }
-    void IncFrameCounter() {}
-}
-namespace InputRecordingControls {
-    bool IsRecording() { return false; }
-}
-InputRecording g_InputRecording = {};
-
-// ── SymbolGuardian stubs ─────────────────────────────────────
-void* R3000SymbolGuardian = nullptr;
-void* R5900SymbolImporter = nullptr;
 
 // ── DarwinMisc stubs (CoreGraphics/IOKit not on iOS) ────────
-bool HostSys::IsPerformanceCore(int cpu) { return cpu < 4; }
 
 // ── SysMemory_Reset wrapper ────────────────────────────────────
 #include "Memory.h"
@@ -118,13 +96,32 @@ namespace CocoaTools {
 }
 
 // ── Misc ──────────────────────────────────────────────────────
-#include "GS/GS.h"
-#include "GSDumpReplayer.h"
-GSDumpReplayerCpu::GSDumpReplayerCpu() = default;
-GSDumpReplayerCpu::~GSDumpReplayerCpu() = default;
-
-// GetMetalAdapterList (called from GS.cpp when Metal backend)
-
-
-#include <string>
 std::vector<std::string> GetMetalAdapterList() { return {}; }
+
+// ── Host callbacks ────────────────────────────────────────────
+namespace Host {
+    void OnVMStarted() {}
+    void OnVMDestroyed() {}
+    void SetMouseMode(bool relative, bool hide) {}
+    void AddKeyedOSDMessage(std::string key, std::string msg, float duration) {}
+    void RemoveKeyedOSDMessage(std::string key) {}
+    void AddIconOSDMessage(std::string key, const char* icon, std::string_view msg, float duration) {}
+    void OnGameChanged(const std::string&, const std::string&, const std::string&, const std::string&, u32, u32) {}
+    void RequestResizeHostDisplay(s32 w, s32 h) {}
+    void OnPerformanceMetricsUpdated() {}
+    void CheckForSettingsChanges(const void* old) {}
+    void CommitBaseSettingChanges() {}
+    bool BeginPresentFrame() { return true; }
+    void CancelGameListRefresh() {}
+}
+
+// ── AudioStream backend stubs ─────────────────────────────────
+#include "Host/AudioStream.h"
+std::unique_ptr<AudioStream> AudioStream::CreateCubebAudioStream(
+    u32 sr, const AudioStreamParameters& p, const char* drv, const char* dev, bool ss, Error* e)
+{ return nullptr; }
+std::unique_ptr<AudioStream> AudioStream::CreateSDLAudioStream(
+    u32 sr, const AudioStreamParameters& p, bool ss, Error* e)
+{ return nullptr; }
+std::vector<std::string> AudioStream::GetCubebDriverNames() { return {}; }
+std::vector<AudioStream::DeviceInfo> AudioStream::GetCubebOutputDevices(const char* drv) { return {}; }
