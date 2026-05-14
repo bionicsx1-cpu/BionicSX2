@@ -10,3 +10,9 @@ public:
   void processWithUpdate(int pad_data) {}
 };
 InputRecording g_InputRecording;
+
+namespace InputRecordingControls {
+  void Record() {}
+  void Stop() {}
+  void TogglePause() {}
+}

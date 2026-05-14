@@ -6,5 +6,6 @@ namespace SaveStateSelectorUI {
   void RefreshList() {}
   void Draw() {}
   bool IsOpen() { return false; }
+  void Clear() {}
   void FileSaveStateCompleted(const std::string& path, bool was_error) {}
 }

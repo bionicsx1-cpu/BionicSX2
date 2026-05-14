@@ -187,6 +187,9 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/StateWrapper.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputManager.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Host/AudioStream.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/Input/InputSource.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/BuildVersion.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/SIO/Pad/PadNotConnected.cpp
 
     # Common Library (cross-platform subset)
     ${CMAKE_SOURCE_DIR}/pcsx2/common/AlignedMalloc.cpp
@@ -218,6 +221,7 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/FastJmp.cpp
     # EXCLUDED: common/Darwin/DarwinMisc.cpp — macOS-only APIs (CoreGraphics, IOKit)
     ${CMAKE_SOURCE_DIR}/pcsx2/common/HTTPDownloader.cpp
+    ${CMAKE_SOURCE_DIR}/pcsx2/common/HTTPDownloaderCurl.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/pcsx2/LayeredSettingsInterface.cpp
 
     # 3rdparty library sources
