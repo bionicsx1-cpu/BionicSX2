@@ -268,6 +268,13 @@ set_target_properties(BionicSX2 PROPERTIES
     XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
 )
 
+# Prevent linker from stripping PCSX2 core symbols.
+# Without this, -dead_strip removes the entire 4.3 MB static lib
+# since main.mm doesn't directly reference any PCSX2 symbol.
+target_link_options(BionicSX2 PRIVATE
+    -Wl,-all_load
+)
+
 # AUDIT REFERENCE: Section 10.2 — Copy entitlements (Xcode only)
 if(CMAKE_GENERATOR MATCHES "Xcode")
     target_entitlements(BionicSX2
