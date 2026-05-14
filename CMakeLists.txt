@@ -294,6 +294,7 @@ target_compile_definitions(bionicsx2_core PRIVATE
     PCSX2_DISABLE_GSCAPTURE=1
     PCSX2_CORE=1
     __POSIX__=1
+    __IOS__=1
 )
 
 # AUDIT REFERENCE: Section 10.2 — Exclude source files
