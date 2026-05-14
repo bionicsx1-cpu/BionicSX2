@@ -1,6 +1,8 @@
 // BionicSX2 iOS — batch stubs for all uncategorized undefined symbols
 #import <Foundation/Foundation.h>
 #include "common/Pcsx2Defs.h"
+#include "common/Assertions.h"
+#include "common/Console.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -16,10 +18,13 @@
 #include "GS/GSDump.h"
 #include "SaveState.h"
 #include "Memory.h"
+#include "Vif_Dynarec.h"
+#include "GS/GSDump.h"
+#include "SaveState.h"
 
-// ── dVifUnpack template stubs ─────────────────────────────────
-template void dVifUnpack<0>(const u8*, bool) {}
-template void dVifUnpack<1>(const u8*, bool) {}
+// ── dVifUnpack template specializations (no-op stubs for iOS) ──
+template<> void dVifUnpack<0>(const u8*, bool) {}
+template<> void dVifUnpack<1>(const u8*, bool) {}
 
 // ── SPU2 globals ──────────────────────────────────────────────
 class V_Core;
@@ -176,9 +181,13 @@ namespace FullscreenUI {
 // ── ImGuiManager stubs (provided by src/stubs/ImGuiManager.cpp) ──
 
 // ── MIPSAnalyst stubs ──────────────────────────────────────
+namespace ccc { class SymbolDatabase; }
 namespace MIPSAnalyst {
     void ScanForFunctions(ccc::SymbolDatabase&, class MemoryInterface&, u32, u32, bool) {}
 }
+
+// ── isa_native SW rasterizer stubs ─────────────────────────
+// (GSDrawScanline.cpp excluded — stub for MULTI_ISA dispatch)
 
 // ── isa_native SW rasterizer stubs ─────────────────────────
 // (GSDrawScanline.cpp excluded — these would be from MULTI_ISA dispatch)
