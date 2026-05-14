@@ -126,7 +126,9 @@ add_library(bionicsx2_core STATIC
     ${CMAKE_SOURCE_DIR}/pcsx2/common/Error.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/FileSystem.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/HostSys.cpp
-    ${CMAKE_SOURCE_DIR}/pcsx2/common/Image.cpp
+    # EXCLUDED: common/Image.cpp — requires libjpeg/libpng/libwebp
+    # Non-critical for core emulation. Stub provides linker-safe no-ops.
+    src/stubs/ImageStub.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/MD5Digest.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/MemoryInterface.cpp
     ${CMAKE_SOURCE_DIR}/pcsx2/common/MemorySettingsInterface.cpp
