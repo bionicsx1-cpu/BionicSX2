@@ -66,12 +66,11 @@ void GSDumpReplayer::RenderUI() {}
 
 // ── isa_native GS SW rasterizer stubs (MULTI_ISA dispatch) ──
 #include <atomic>
-#include <memory>
 namespace isa_native {
-    class GSRasterizerData { public: static std::atomic<int> s_counter; };
-    class GSRasterizerList { public: static std::shared_ptr<GSRasterizerList> Create(int) { return nullptr; } };
-    class GSSingleRasterizer { public: GSSingleRasterizer() = default; void Draw(GSRasterizerData&) {} };
     std::atomic<int> GSRasterizerData::s_counter{0};
+    void* GSRasterizerList::Create(int) { return nullptr; }
+    void GSSingleRasterizer::Draw(void*) {}
+    GSSingleRasterizer::GSSingleRasterizer() = default;
 }
 
 // ── PGIF stubs ──────────────────────────────────────────────
@@ -205,22 +204,21 @@ namespace Host {
 }
 
 // ── InputRecording stubs ──────────────────────────────────────
-class InputRecording {
-    static InputRecording s_instance;
-public:
-    static InputRecording& getControls() { return s_instance; }
-    void handleReset() {}
-    void incFrameCounter() {}
-    void processRecordQueue() {}
-    void handleLoadingSavestate() {}
-    void handleControllerDataUpdate() {}
-    void handleExceededFrameCounter() {}
-    void stop() {}
-};
-InputRecording InputRecording::s_instance;
+#include "Recording/InputRecording.h"
+#include "Recording/InputRecordingControls.h"
+InputRecording g_InputRecording;
+InputRecordingControls& InputRecording::getControls() { static InputRecordingControls c; return c; }
+void InputRecording::handleReset() {}
+void InputRecording::incFrameCounter() {}
+void InputRecording::processRecordQueue() {}
+void InputRecording::handleLoadingSavestate() {}
+void InputRecording::handleControllerDataUpdate() {}
+void InputRecording::handleExceededFrameCounter() {}
+void InputRecording::stop() {}
+void InputRecordingControls::processControlQueue() {}
 
 // ── CsoFileReader stub ────────────────────────────────────
-class CsoFileReader { public: CsoFileReader() {} };
+class CsoFileReader { public: CsoFileReader() = default; };
 
 // ── ImGuiFreeType stub ────────────────────────────────────
 namespace ImGuiFreeType { void* GetFontLoader() { return nullptr; } }
@@ -228,6 +226,45 @@ namespace ImGuiFreeType { void* GetFontLoader() { return nullptr; } }
 // ── MipsStackWalk stub ────────────────────────────────────
 class DebugInterface;
 namespace MipsStackWalk { bool Walk(DebugInterface*, u32, u32, u32, u32) { return false; } }
+
+// ── CBreakPoints static members ──────────────────────────────
+#include "DebugTools/Breakpoints.h"
+std::vector<MemCheck> CBreakPoints::memChecks_;
+bool CBreakPoints::breakpointTriggered_ = false;
+BreakPointCpu CBreakPoints::breakpointTriggeredCpu_ = {};
+BreakPointCpu CBreakPoints::GetBreakpointTriggeredCpu() { return {}; }
+
+// ── DebugInterface static members ────────────────────────────
+#include "DebugTools/DebugInterface.h"
+bool DebugInterface::m_pause_on_entry = false;
+
+// ── SymbolGuardian + SymbolImporter ─────────────────────────
+#include "DebugTools/SymbolGuardian.h"
+#include "DebugTools/SymbolImporter.h"
+SymbolGuardian R3000SymbolGuardian;
+SymbolImporter R5900SymbolImporter(SymbolGuardian());
+
+// ── FolderMemoryCard / FileAccessHelper stubs ───────────────
+class FolderMemoryCard {
+public:
+    FolderMemoryCard() = default;
+    bool Open(const std::string&, const void*, u32, bool, const std::string&, bool) { return false; }
+    void Close(bool) {}
+};
+class FileAccessHelper { public: ~FileAccessHelper() {} };
+
+// ── PageFaultHandler ────────────────────────────────────────
+#include "PageFaultHandler.h"
+bool PageFaultHandler::Install(Error*) { return true; }
+
+// ── GSTextureReplacements ─────────────────────────────────────
+namespace GSTextureReplacements {
+    void UpdateConfig(void*) {}
+    void DumpTexture(void*, void*, void*, void*, void*, u32) {}
+}
+
+// ── standardizeBreakpointAddress ─────────────────────────────
+u32 standardizeBreakpointAddress(u32 addr) { return addr; }
 
 // ── InputManager keyboard stubs ────────────────────────────
 namespace InputManager {
